@@ -15,10 +15,10 @@ driver = webdriver.Chrome(executable_path=cs.CHROMEDRIVER_PATH, chrome_options=c
 driver.get('https://www.baseball.cz/modules.php?op=modload&name=liga&file=index&do=statx&akce=432&pda=2&admina=')
 
 cat = Select(driver.find_element_by_name('xco'))
-cat.select_by_value(category)
+cat.select_by_value(cs.CATEGORIES[0])
 
 typ = Select(driver.find_element_by_name('xtyp'))
-typ.select_by_index(cs.TYPES["týmový"] if team_stats else cs.TYPES['individuální'])
+typ.select_by_index(cs.TYPES['individuální'])
 
 elem = driver.find_elements_by_xpath("//*[contains(text(), 'Exportovat')]")[0]
 elem.click()
