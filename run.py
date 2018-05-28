@@ -1,3 +1,3 @@
 import os
 
-print(os.dirlist('.'))
+print(os.listdir('.'))
