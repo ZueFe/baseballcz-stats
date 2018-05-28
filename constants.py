@@ -1,9 +1,12 @@
 import os
 
 # SELENIUM CONSTANTS
-saveDir =   "{}\\data\\".format(os.path.dirname(os.path.realpath(__file__)))
+saveDir =   "{}/data/".format(os.path.dirname(os.path.realpath(__file__)))
 CATEGORIES = ['palka', 'pole', 'nadhoz', 'catcher']
 TYPES = {'individuální':0, "týmový":2}
+
+GOOGLE_CHROME_BIN = '/app/.apt/usr/bin/google-chrome'
+CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 
 # STATS_CONSTANTS
 USED_ENCODING = 'windows-1250'
