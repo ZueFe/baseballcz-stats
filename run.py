@@ -9,7 +9,7 @@ chrome_options = Options()
 chrome_options.binary_location = cs.GOOGLE_CHROME_BIN
 chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument('--no-sandbox')
-prefs = {"download.default_directory" : cs.saveDir}
+prefs = {"download.default_directory" : cs.saveDir, "directory_upgrade": True}
 chrome_options.add_experimental_option("prefs",prefs)
 driver = webdriver.Chrome(executable_path=cs.CHROMEDRIVER_PATH, chrome_options=chrome_options)
 
