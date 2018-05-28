@@ -25,3 +25,4 @@ elem.click()
 
 #dw.download_stats()
 print(os.listdir(os.path.join('.', "data")))
+print(driver.experimental_options)
