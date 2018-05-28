@@ -3,6 +3,7 @@ import download as dw
 import constants as cs
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import Select
 
 chrome_options = Options()
 chrome_options.binary_location = cs.GOOGLE_CHROME_BIN
