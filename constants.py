@@ -1,7 +1,7 @@
 import os
 
 # SELENIUM CONSTANTS
-saveDir =   "/app/data"
+saveDir =   "/app/data/"
 CATEGORIES = ['palka', 'pole', 'nadhoz', 'catcher']
 TYPES = {'individuální':0, "týmový":2}
 
