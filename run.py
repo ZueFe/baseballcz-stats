@@ -10,7 +10,7 @@ chrome_options.binary_location = cs.GOOGLE_CHROME_BIN
 chrome_options.add_argument('--disable-gpu')
 chrome_options.add_argument('--no-sandbox')
 prefs = {"download.default_directory" : cs.saveDir}
-chromeOptions.add_experimental_option("prefs",prefs)
+chrome_options.add_experimental_option("prefs",prefs)
 driver = webdriver.Chrome(executable_path=cs.CHROMEDRIVER_PATH, chrome_options=chrome_options)
 
 driver.get('https://www.baseball.cz/modules.php?op=modload&name=liga&file=index&do=statx&akce=432&pda=2&admina=')
