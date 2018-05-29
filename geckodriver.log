@@ -1,0 +1,22 @@
+1527587652943	geckodriver	INFO	geckodriver 0.20.1
+1527587652949	geckodriver	INFO	Listening on 127.0.0.1:59831
+1527587655931	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "--headless" "-profile" "C:\\Users\\ex3me\\AppData\\Local\\Temp\\rust_mozprofile.oiwJVOkP3HiG"
+*** You are running in headless mode.
+Unable to read VR Path Registry from C:\Users\ex3me\AppData\Local\openvr\openvrpaths.vrpath
+Unable to read VR Path Registry from C:\Users\ex3me\AppData\Local\openvr\openvrpaths.vrpath
+Unable to read VR Path Registry from C:\Users\ex3me\AppData\Local\openvr\openvrpaths.vrpath
+Unable to read VR Path Registry from C:\Users\ex3me\AppData\Local\openvr\openvrpaths.vrpath
+1527587657306	Marionette	INFO	Listening on port 59841
+1527587657449	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.baseball.cz/themes/cba/js/jquery-1.9.0.min.js, line 4: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
+1527590690166	geckodriver	INFO	geckodriver 0.20.1
+1527590690172	geckodriver	INFO	Listening on 127.0.0.1:61554
+1527590693200	mozrunner::runner	INFO	Running command: "C:\\Program Files\\Mozilla Firefox\\firefox.exe" "-marionette" "--headless" "-profile" "C:\\Users\\ex3me\\AppData\\Local\\Temp\\rust_mozprofile.pak4fhuKHMpN"
+*** You are running in headless mode.
+Unable to read VR Path Registry from C:\Users\ex3me\AppData\Local\openvr\openvrpaths.vrpath
+Unable to read VR Path Registry from C:\Users\ex3me\AppData\Local\openvr\openvrpaths.vrpath
+Unable to read VR Path Registry from C:\Users\ex3me\AppData\Local\openvr\openvrpaths.vrpath
+Unable to read VR Path Registry from C:\Users\ex3me\AppData\Local\openvr\openvrpaths.vrpath
+1527590694275	Marionette	INFO	Listening on port 61564
+1527590694710	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript warning: https://www.baseball.cz/themes/cba/js/jquery-1.9.0.min.js, line 4: Using //@ to indicate sourceMappingURL pragmas is deprecated. Use //# instead
