@@ -22,7 +22,7 @@ Selenium is used to download the data from the web page by simulating the click 
 ## Examples
 The application offers several methods to help download and work with the data. Note that as this API is not installed into the Python download location, it is required to run python scripts from the same folder where the API is located.
 
-**Download single CSV and save it to \data\**
+**Download single CSV**
 ```python
 import download as dw
 import constants as cs
@@ -36,6 +36,21 @@ dw.download_stats(category = cs.CATEGORIES[1])
 
 # Download CSV, team statistics for batter
 dw.download_stats(category = cs.CATEGORIES[0], team_stats = True)
+```
+
+**Download different CSVs**
+```python
+import download as dw
+import constants as cs
+
+# Download all team stats
+dw.download_team_stats()
+
+# Download all individual stats
+dw.download_single_stats()
+
+# Download all stats
+dw.download_all()
 ```
 
 **Load single CSV and compute statistics for single column**
