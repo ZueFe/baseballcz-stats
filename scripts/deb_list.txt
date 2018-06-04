@@ -1,0 +1,4 @@
+git
+software-properties-common 
+firefox-esr
+xvfb
