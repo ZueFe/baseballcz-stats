@@ -1,7 +1,7 @@
 import os
 
 # SELENIUM CONSTANTS
-saveDir =   "{0}{1}data{1}".format(os.path.dirname(os.path.realpath(__file__)), os.sep)
+saveDir = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
 CATEGORIES = ['palka', 'pole', 'nadhoz', 'catcher']
 TYPES = {'individuální':0, "týmový":2}
 GOOGLE_CHROME_BIN = '/app/.apt/usr/bin/google-chrome'

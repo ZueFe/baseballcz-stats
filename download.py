@@ -55,7 +55,10 @@ def download_stats(category = cs.CATEGORIES[0], team_stats = False, browser='fir
         time.sleep(0.5)
 
         #TODO: better naming conventions for team/individual
-        os.replace('{}stats.csv'.format(get_saveDir()), '{}stats_{}_{}.csv'.format(get_saveDir(), category, 'team' if team_stats else 'individual'))
+        downloaded_file = os.path.join(get_saveDir(), "stats.csv")
+        new_filename = "stats_{}_{}.csv".format(category, 'team' if team_stats else 'individual')
+        new_filepath = os.path.join(get_saveDir(), new_filename)
+        os.replace(downloaded_file, new_filepath) 
     finally:
         driver.close()
 
