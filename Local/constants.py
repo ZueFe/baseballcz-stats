@@ -1,7 +1,7 @@
 import os
 
 # SELENIUM CONSTANTS
-saveDir =   "{}\\data\\".format(os.path.dirname(os.path.realpath(__file__)))
+saveDir =   "{0}{1}data{1}".format(os.path.dirname(os.path.realpath(__file__)), os.sep)
 CATEGORIES = ['palka', 'pole', 'nadhoz', 'catcher']
 TYPES = {'individuální':0, "týmový":2}
 

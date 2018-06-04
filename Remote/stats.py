@@ -10,8 +10,9 @@ def load_stats(file_name):
     global df
     global df_default
 
-    df = pd.read_csv('{}\\data\\{}'.format(cs.saveDir,file_name), encoding=cs.USED_ENCODING, delimiter=cs.SEP)
+    df = pd.read_csv('{}{}'.format(cs.saveDir,file_name), encoding=cs.USED_ENCODING, delimiter=cs.SEP)
     df_default = df
+    return df
 
 def load_individual_batters():
     load_stats(cs.IND_BATTER)
