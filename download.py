@@ -2,8 +2,21 @@ from selenium import webdriver
 import os
 import constants as cs
 from selenium.webdriver.firefox.options import Options
+from selenium.webdriver import ChromeOptions
 from selenium.webdriver.support.ui import Select
 
+def setup_chrome_opt():
+    chrome_options = ChromeOptions()
+    chrome_options.binary_location = cs.GOOGLE_CHROME_BIN
+    chrome_options.add_argument('--disable-gpu')
+    chrome_options.add_argument('--no-sandbox')
+    prefs = {'download.default_directory' : cs.saveDir}
+    chrome_options.add_experimental_option('prefs', prefs)
+    chrome_options.add_argument('--headless')
+    driver = webdriver.Chrome(executable_path=cs.CHROMEDRIVER_PATH, chrome_options=chrome_options)
+
+
+    return driver
 
 def setup_firefox_opt():
     options = Options();
@@ -16,8 +29,11 @@ def setup_firefox_opt():
 
     return driver
 
-def download_stats(category = cs.CATEGORIES[0], team_stats = False):
-    driver = setup_firefox_opt()
+def download_stats(category = cs.CATEGORIES[0], team_stats = False, browser='chrome'):
+    if browser == 'firefox':
+        driver = setup_firefox_opt()
+    else:
+        driver = setup_chrome_opt()
 
     driver.get('https://www.baseball.cz/modules.php?op=modload&name=liga&file=index&do=statx&akce=432&pda=2&admina=')
 

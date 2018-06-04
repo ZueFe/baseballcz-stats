@@ -4,6 +4,8 @@ import os
 saveDir =   "{0}{1}data{1}".format(os.path.dirname(os.path.realpath(__file__)), os.sep)
 CATEGORIES = ['palka', 'pole', 'nadhoz', 'catcher']
 TYPES = {'individuální':0, "týmový":2}
+GOOGLE_CHROME_BIN = ' /app/.apt/usr/bin/google-chrome'
+CHROMEDRIVER_PATH = '/app/.chromedriver/bin/chromedriver'
 
 # STATS_CONSTANTS
 USED_ENCODING = 'windows-1250'
