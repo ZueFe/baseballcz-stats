@@ -1,0 +1,1178 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>local.stats &mdash; BaseballCZ-Statistics 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> BaseballCZ-Statistics
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../documentation.html">Documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../contact.html">Contacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../contribute.html">Contribute</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">BaseballCZ-Statistics</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>local.stats</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for local.stats</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Main script for computation of all the statistics. Appreciation goes to `Baseball Stats CZ &lt;https://baseball-stat.cz&gt;`_ for</span>
+<span class="sd">help and explanation with different statistics and equations.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Ignore divide by 0, will return NaN and be subbed for 0 later</span>
+<span class="n">np</span><span class="o">.</span><span class="n">seterr</span><span class="p">(</span><span class="n">divide</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+
+<span class="c1">### DECORATORS</span>
+<span class="k">def</span> <span class="nf">check_loaded</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="n">x</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No data loaded.&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">func_wrapper</span>
+
+<span class="k">def</span> <span class="nf">check_valid_category</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">func_wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Category </span><span class="si">{}</span><span class="s2"> not found&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">return</span> <span class="n">func_wrapper</span>
+
+<span class="c1">### METHODS</span>
+<span class="c1">## BATTERS</span>
+<div class="viewcode-block" id="G"><a class="viewcode-back" href="../../stats_local.html#local.stats.G">[docs]</a><span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Games played. Available for pitchers and batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;G&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PAB"><a class="viewcode-back" href="../../stats_local.html#local.stats.PAB">[docs]</a><span class="k">def</span> <span class="nf">PAB</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plate appearances. Counts all appearances at plate. Available for batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span> <span class="p">,</span><span class="s2">&quot;PAB&quot;</span><span class="p">)</span></div>
+
+<span class="c1"># for pitchers too</span>
+<div class="viewcode-block" id="AB"><a class="viewcode-back" href="../../stats_local.html#local.stats.AB">[docs]</a><span class="k">def</span> <span class="nf">AB</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    At bat, doesn&#39;t count sacrifice, walks and hit by pitch. Available for pitchers and batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;AB&quot;</span><span class="p">)</span></div>
+
+<span class="c1"># works for pitchers too</span>
+<div class="viewcode-block" id="R"><a class="viewcode-back" href="../../stats_local.html#local.stats.R">[docs]</a><span class="k">def</span> <span class="nf">R</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of runs to home plate for batters, or number of allowed runs for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;R&quot;</span><span class="p">)</span></div>
+
+<span class="c1"># also used for pitchers</span>
+<div class="viewcode-block" id="H"><a class="viewcode-back" href="../../stats_local.html#local.stats.H">[docs]</a><span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of hits for batters, or number of hits allowed for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;H&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;int64&#39;</span><span class="p">)</span></div>
+
+<span class="c1">#also used for pitchers</span>
+<div class="viewcode-block" id="double"><a class="viewcode-back" href="../../stats_local.html#local.stats.double">[docs]</a><span class="k">def</span> <span class="nf">double</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of double hits for batters, or number of doubles allowed for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;2B&quot;</span><span class="p">)</span></div>
+
+<span class="c1">#also used for pitchers</span>
+<div class="viewcode-block" id="triple"><a class="viewcode-back" href="../../stats_local.html#local.stats.triple">[docs]</a><span class="k">def</span> <span class="nf">triple</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of triple hits for batters, or number of triples allowed for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;3B&quot;</span><span class="p">)</span></div>
+
+<span class="c1">#also used for pitchers</span>
+<div class="viewcode-block" id="single"><a class="viewcode-back" href="../../stats_local.html#local.stats.single">[docs]</a><span class="k">def</span> <span class="nf">single</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of single hits for batters, or number of singles allowed for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">two_b</span> <span class="o">=</span> <span class="n">double</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">three_b</span> <span class="o">=</span> <span class="n">triple</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">hr</span> <span class="o">=</span> <span class="n">HR</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">H</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">two_b</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">three_b</span><span class="p">,</span> <span class="n">hr</span><span class="p">)))</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;1B&#39;</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="RBI"><a class="viewcode-back" href="../../stats_local.html#local.stats.RBI">[docs]</a><span class="k">def</span> <span class="nf">RBI</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of batted runs, available for batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;RBI&quot;</span><span class="p">)</span></div>
+
+<span class="c1">#also used for pitchers</span>
+<div class="viewcode-block" id="HR"><a class="viewcode-back" href="../../stats_local.html#local.stats.HR">[docs]</a><span class="k">def</span> <span class="nf">HR</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of home runs for batters, or number of home runs allowed per pitcher.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;HR&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;int64&#39;</span><span class="p">)</span></div>
+
+<span class="c1">#also for catchers</span>
+<div class="viewcode-block" id="SB"><a class="viewcode-back" href="../../stats_local.html#local.stats.SB">[docs]</a><span class="k">def</span> <span class="nf">SB</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of stolen bases for batters, or catchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;SB&quot;</span><span class="p">)</span></div>
+
+<span class="c1">#also for catcher</span>
+<div class="viewcode-block" id="CS"><a class="viewcode-back" href="../../stats_local.html#local.stats.CS">[docs]</a><span class="k">def</span> <span class="nf">CS</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of times caught stealing base for batters, or number of players caught stealing for catchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;CS&quot;</span><span class="p">),</span> <span class="s1">&#39;int64&#39;</span><span class="p">)</span></div>
+
+<span class="c1">#SBA in data</span>
+<div class="viewcode-block" id="SB_perct"><a class="viewcode-back" href="../../stats_local.html#local.stats.SB_perct">[docs]</a><span class="k">def</span> <span class="nf">SB_perct</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Percentage of successfully stolen bases. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s2">&quot;SBA&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span></div>
+
+<span class="c1">#for pitchers too</span>
+<span class="k">def</span> <span class="nf">BB</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number free bases for batters, or number of free bases given by pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;BB&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BB_perct"><a class="viewcode-back" href="../../stats_local.html#local.stats.BB_perct">[docs]</a><span class="k">def</span> <span class="nf">BB_perct</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Percentage of free bases to plate appearances. Available for batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">BB</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">pa</span> <span class="o">=</span> <span class="n">PAB</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">bb</span><span class="p">,</span><span class="n">pa</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;BB%&#39;</span>
+
+    <span class="k">return</span> <span class="n">nan_to_zero</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HP"><a class="viewcode-back" href="../../stats_local.html#local.stats.HP">[docs]</a><span class="k">def</span> <span class="nf">HP</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of hit by pitch, for batters and pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;HP&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SH"><a class="viewcode-back" href="../../stats_local.html#local.stats.SH">[docs]</a><span class="k">def</span> <span class="nf">SH</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sacrificial hit. Available for batters and pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;SH&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SF"><a class="viewcode-back" href="../../stats_local.html#local.stats.SF">[docs]</a><span class="k">def</span> <span class="nf">SF</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sacrificial fly-out, available for batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;SF&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="XBH"><a class="viewcode-back" href="../../stats_local.html#local.stats.XBH">[docs]</a><span class="k">def</span> <span class="nf">XBH</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of extra base hits for batters, or number of extra base hits allowed for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">sec_b</span> <span class="o">=</span> <span class="n">double</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">third_b</span> <span class="o">=</span> <span class="n">triple</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">hr</span> <span class="o">=</span> <span class="n">HR</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">sec_b</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">third_b</span><span class="p">,</span><span class="n">hr</span><span class="p">))</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;XBH&#39;</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="TB"><a class="viewcode-back" href="../../stats_local.html#local.stats.TB">[docs]</a><span class="k">def</span> <span class="nf">TB</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Total bases hit for batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;TB&#39;</span><span class="p">),</span> <span class="s1">&#39;int64&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BA"><a class="viewcode-back" href="../../stats_local.html#local.stats.BA">[docs]</a><span class="k">def</span> <span class="nf">BA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Batting average for batters and pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;BA&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span></div>
+
+<span class="c1">#SOA in data</span>
+<div class="viewcode-block" id="KA"><a class="viewcode-back" href="../../stats_local.html#local.stats.KA">[docs]</a><span class="k">def</span> <span class="nf">KA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Strikeout average. Number of strikeouts per at bad, available for batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;SOA&#39;</span><span class="p">),</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;KA&#39;</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+<span class="c1"># slugging, pitchers (SLGA), batters (SLG)</span>
+<div class="viewcode-block" id="SA"><a class="viewcode-back" href="../../stats_local.html#local.stats.SA">[docs]</a><span class="k">def</span> <span class="nf">SA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Slugging for batters, or slugging against for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;SA&#39;</span><span class="p">),</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span></div>
+
+<span class="c1"># works for pitchers too</span>
+<div class="viewcode-block" id="OBP"><a class="viewcode-back" href="../../stats_local.html#local.stats.OBP">[docs]</a><span class="k">def</span> <span class="nf">OBP</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    On-base percentage, available for batters and pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;OBP&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ISO"><a class="viewcode-back" href="../../stats_local.html#local.stats.ISO">[docs]</a><span class="k">def</span> <span class="nf">ISO</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_pa</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Isolated power, computed as ratio between slugging and batting average. Available for batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;PAB&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_pa</span><span class="p">]</span>
+    <span class="n">slg</span> <span class="o">=</span> <span class="n">SA</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">)</span>
+    <span class="n">ba</span> <span class="o">=</span> <span class="n">BA</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">slg</span><span class="p">,</span> <span class="n">ba</span><span class="p">)</span>
+
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;ISO&#39;</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="OPS"><a class="viewcode-back" href="../../stats_local.html#local.stats.OPS">[docs]</a><span class="k">def</span> <span class="nf">OPS</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    On-base percentage, plus slugging. Available for batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">obp</span> <span class="o">=</span> <span class="n">OBP</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">slg</span> <span class="o">=</span> <span class="n">SA</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">obp</span><span class="p">,</span> <span class="n">slg</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;OPS&#39;</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="BABIP"><a class="viewcode-back" href="../../stats_local.html#local.stats.BABIP">[docs]</a><span class="k">def</span> <span class="nf">BABIP</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Batting average on balls in play. Available for batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">H</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">hr</span> <span class="o">=</span> <span class="n">HR</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">ab</span> <span class="o">=</span> <span class="n">AB</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">so</span> <span class="o">=</span> <span class="n">K</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">sf</span> <span class="o">=</span> <span class="n">SF</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">top</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">hr</span><span class="p">)</span>
+    <span class="n">bottom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">ab</span><span class="p">,</span> <span class="n">hr</span><span class="p">),</span> <span class="n">so</span><span class="p">),</span> <span class="n">sf</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span><span class="s1">&#39;BABIP&#39;</span>
+
+    <span class="k">return</span> <span class="n">nan_to_zero</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="wOBA"><a class="viewcode-back" href="../../stats_local.html#local.stats.wOBA">[docs]</a><span class="k">def</span> <span class="nf">wOBA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_pa</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Weighted on-base average. Can be adjusted to be computed only for players with certain</span>
+<span class="sd">    number on plate appearances.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :param min_pa: Minimal number of plate appearances(PA). All players with smaller number of PA will be neglected from computation</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;PAB&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_pa</span><span class="p">]</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">BB</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">),</span> <span class="mf">0.72</span><span class="p">)</span>
+    <span class="n">hp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">HP</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">),</span> <span class="mf">0.75</span><span class="p">)</span>
+    <span class="n">one_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">single</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">),</span> <span class="mf">0.9</span><span class="p">)</span>
+    <span class="n">two_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">double</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">),</span> <span class="mf">1.24</span><span class="p">)</span>
+    <span class="n">three_b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">triple</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">),</span> <span class="mf">1.56</span><span class="p">)</span>
+    <span class="n">hr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">HR</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">),</span> <span class="mf">1.95</span><span class="p">)</span>
+    <span class="n">pa</span> <span class="o">=</span> <span class="n">PAB</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bb</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">hp</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">one_b</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">two_b</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">three_b</span><span class="p">,</span> <span class="n">hr</span><span class="p">)))))</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">pa</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;wOBA&#39;</span>
+
+    <span class="k">return</span> <span class="n">nan_to_zero</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+<span class="c1">#TODO: add oWAR, bWAR, rWAR</span>
+
+<span class="c1">#WAR computation</span>
+<span class="k">def</span> <span class="nf">wRAA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_pa</span><span class="p">):</span>
+    <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;PAB&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_pa</span><span class="p">]</span>
+    <span class="n">woba</span> <span class="o">=</span> <span class="n">wOBA</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">,</span> <span class="n">min_pa</span><span class="p">)</span>
+    <span class="n">lgwOBA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">woba</span><span class="p">)</span>
+    <span class="n">pa</span> <span class="o">=</span> <span class="n">PAB</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;PAB&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_pa</span><span class="p">]</span>
+    <span class="n">woba_scale</span> <span class="o">=</span> <span class="n">wOBA_scale</span><span class="p">(</span><span class="n">woba</span><span class="p">)</span>
+
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">woba</span><span class="p">,</span> <span class="n">lgwOBA</span><span class="p">),</span> <span class="n">woba_scale</span><span class="p">),</span> <span class="n">pa</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;Batted Runs&#39;</span>
+
+    <span class="k">return</span> <span class="n">nan_to_zero</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">wOBA_scale</span><span class="p">(</span><span class="n">woba</span><span class="p">):</span>
+    <span class="n">wOBA_const</span> <span class="o">=</span> <span class="mf">0.395606495399472</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">woba</span><span class="p">,</span> <span class="n">wOBA_const</span><span class="p">)</span>
+
+<span class="c1">######</span>
+<span class="k">def</span> <span class="nf">R_to_PA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_pa</span><span class="p">):</span>
+    <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;PAB&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_pa</span><span class="p">]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">R</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">)</span>
+    <span class="n">pa</span> <span class="o">=</span> <span class="n">PAB</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">pa</span><span class="p">))</span>
+
+<span class="c1">#TODO: chcek if lgR/PA is computed correctly</span>
+<div class="viewcode-block" id="wRC"><a class="viewcode-back" href="../../stats_local.html#local.stats.wRC">[docs]</a><span class="k">def</span> <span class="nf">wRC</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_pa</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Weighted runs created. Available for batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :param min_pa: Minimal number of plate appearances(PA). All players with smaller number of PA will be neglected from computation</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">woba</span> <span class="o">=</span> <span class="n">wOBA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="n">min_pa</span><span class="p">)</span>
+    <span class="n">lgwoba</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">woba</span><span class="p">)</span>
+    <span class="n">woba_scale</span> <span class="o">=</span> <span class="n">wOBA_scale</span><span class="p">(</span><span class="n">woba</span><span class="p">)</span>
+    <span class="n">lg_r_to_pa</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">R_to_PA</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_pa</span><span class="p">))</span>
+    <span class="n">pa</span> <span class="o">=</span> <span class="n">PAB</span><span class="p">(</span><span class="n">df</span><span class="p">)[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;PAB&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_pa</span><span class="p">]</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">woba</span><span class="p">,</span> <span class="n">lgwoba</span><span class="p">),</span> <span class="n">woba_scale</span><span class="p">),</span> <span class="n">lg_r_to_pa</span><span class="p">),</span> <span class="n">pa</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;wRC&#39;</span>
+
+    <span class="k">return</span> <span class="n">nan_to_zero</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+<span class="c1"># taken from http://bleedcubbieblue.com</span>
+<span class="c1"># TODO: check, doesn&#39;t work for min_pa == 0 (returns -0.0)</span>
+<div class="viewcode-block" id="wRC_plus"><a class="viewcode-back" href="../../stats_local.html#local.stats.wRC_plus">[docs]</a><span class="k">def</span> <span class="nf">wRC_plus</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_pa</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Weighted run created plus. 100.0 is league average. Available for batters.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :param min_pa: Minimal number of plate appearances(PA). All players with smaller number of PA will be neglected from computation</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">wrc</span> <span class="o">=</span> <span class="n">wRC</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_pa</span><span class="p">)</span>
+    <span class="n">lg_wrc</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">wrc</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">wrc</span><span class="p">,</span> <span class="n">lg_wrc</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;wRC+&#39;</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
+<span class="c1">## PITCHERS</span>
+<div class="viewcode-block" id="CG"><a class="viewcode-back" href="../../stats_local.html#local.stats.CG">[docs]</a><span class="k">def</span> <span class="nf">CG</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Complete games. Available for pitchers.</span>
+
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span><span class="s1">&#39;CG&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="W"><a class="viewcode-back" href="../../stats_local.html#local.stats.W">[docs]</a><span class="k">def</span> <span class="nf">W</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wins. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;W&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="L"><a class="viewcode-back" href="../../stats_local.html#local.stats.L">[docs]</a><span class="k">def</span> <span class="nf">L</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Losses. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">)</span></div>
+
+<span class="c1">#SAV in data</span>
+<div class="viewcode-block" id="SV"><a class="viewcode-back" href="../../stats_local.html#local.stats.SV">[docs]</a><span class="k">def</span> <span class="nf">SV</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Saves. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;SAV&#39;</span><span class="p">),</span> <span class="s1">&#39;int64&#39;</span><span class="p">)</span></div>
+
+<span class="c1">#data contain % so will compute this myself</span>
+<div class="viewcode-block" id="WA"><a class="viewcode-back" href="../../stats_local.html#local.stats.WA">[docs]</a><span class="k">def</span> <span class="nf">WA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Win average. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">W</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">L</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">l</span><span class="p">))</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;WA&#39;</span>
+    <span class="k">return</span> <span class="n">nan_to_zero</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+<span class="c1">#also catchers</span>
+<div class="viewcode-block" id="IP"><a class="viewcode-back" href="../../stats_local.html#local.stats.IP">[docs]</a><span class="k">def</span> <span class="nf">IP</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Innings pitched. Available for pitchers and catchers.</span>
+
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;IP&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BFP"><a class="viewcode-back" href="../../stats_local.html#local.stats.BFP">[docs]</a><span class="k">def</span> <span class="nf">BFP</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of batters pitcher pitched to. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;BFP&#39;</span><span class="p">)</span></div>
+
+<span class="c1">#SO in data, work for pitchers too</span>
+<div class="viewcode-block" id="K"><a class="viewcode-back" href="../../stats_local.html#local.stats.K">[docs]</a><span class="k">def</span> <span class="nf">K</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of strikeout. Available for batters and pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;SO&#39;</span><span class="p">),</span> <span class="s1">&#39;int64&#39;</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;K&#39;</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="BB"><a class="viewcode-back" href="../../stats_local.html#local.stats.BB">[docs]</a><span class="k">def</span> <span class="nf">BB</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bases on balls, free bases given to opponent batters. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;BB&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ER"><a class="viewcode-back" href="../../stats_local.html#local.stats.ER">[docs]</a><span class="k">def</span> <span class="nf">ER</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Earned runs. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;ER&#39;</span><span class="p">),</span> <span class="s1">&#39;int64&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WP"><a class="viewcode-back" href="../../stats_local.html#local.stats.WP">[docs]</a><span class="k">def</span> <span class="nf">WP</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wild pitch. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;WP&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="HB"><a class="viewcode-back" href="../../stats_local.html#local.stats.HB">[docs]</a><span class="k">def</span> <span class="nf">HB</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Hit batters. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;HB&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ERA"><a class="viewcode-back" href="../../stats_local.html#local.stats.ERA">[docs]</a><span class="k">def</span> <span class="nf">ERA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Earned run average. Number of runs allowed per 9 innings. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;ERA&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WPA"><a class="viewcode-back" href="../../stats_local.html#local.stats.WPA">[docs]</a><span class="k">def</span> <span class="nf">WPA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Wild pitches average, number of wild pitches per 9 innings. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;WPA&#39;</span><span class="p">),</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="WHIP"><a class="viewcode-back" href="../../stats_local.html#local.stats.WHIP">[docs]</a><span class="k">def</span> <span class="nf">WHIP</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Walks and hits per inning pitched. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">BB</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">H</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">ip</span> <span class="o">=</span> <span class="n">IP</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bb</span><span class="p">,</span> <span class="n">h</span><span class="p">),</span><span class="n">ip</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;WHIP&#39;</span>
+
+    <span class="k">return</span> <span class="n">nan_to_zero</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="K9"><a class="viewcode-back" href="../../stats_local.html#local.stats.K9">[docs]</a><span class="k">def</span> <span class="nf">K9</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Strikouts per 9 innings. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">K</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">ip</span> <span class="o">=</span> <span class="n">IP</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;K/9&#39;</span>
+
+    <span class="k">return</span> <span class="n">nan_to_zero</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BB9"><a class="viewcode-back" href="../../stats_local.html#local.stats.BB9">[docs]</a><span class="k">def</span> <span class="nf">BB9</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bases on balls per 9 innings. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">BB</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">ip</span> <span class="o">=</span> <span class="n">IP</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">bb</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">ip</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;BB/9&#39;</span>
+
+    <span class="k">return</span> <span class="n">nan_to_zero</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="KtoBB"><a class="viewcode-back" href="../../stats_local.html#local.stats.KtoBB">[docs]</a><span class="k">def</span> <span class="nf">KtoBB</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Ratio of strikeouts to bases on balls. Available to pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">BB</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">K</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">bb</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;K/BB&#39;</span>
+
+    <span class="k">return</span> <span class="n">nan_to_zero</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="BAA"><a class="viewcode-back" href="../../stats_local.html#local.stats.BAA">[docs]</a><span class="k">def</span> <span class="nf">BAA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Batting average against. Available to pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">H</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">ip</span> <span class="o">=</span> <span class="n">IP</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">ip</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;BAA&#39;</span>
+
+    <span class="k">return</span> <span class="n">nan_to_zero</span><span class="p">(</span><span class="n">res</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="OPSA"><a class="viewcode-back" href="../../stats_local.html#local.stats.OPSA">[docs]</a><span class="k">def</span> <span class="nf">OPSA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    On-base plus slugging average. Available to pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">slg</span> <span class="o">=</span> <span class="n">SA</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">obp</span> <span class="o">=</span> <span class="n">OBP</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">slg</span><span class="p">,</span> <span class="n">obp</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;OPSA&#39;</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<span class="c1">#Filter out pitchers with few IP to get proper ERA and league values</span>
+<div class="viewcode-block" id="FIP"><a class="viewcode-back" href="../../stats_local.html#local.stats.FIP">[docs]</a><span class="k">def</span> <span class="nf">FIP</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_ip</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Fielding independent pitching. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :param min_pa: Minimal number of plate appearances(PA). All players with smaller number of PA will be neglected from computation</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filtered_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">change_type</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;IP&#39;</span><span class="p">],</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">min_ip</span><span class="p">]</span>
+
+    <span class="n">hr</span> <span class="o">=</span> <span class="n">HR</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">)</span>
+    <span class="n">bb</span> <span class="o">=</span> <span class="n">BB</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">)</span>
+    <span class="n">hb</span> <span class="o">=</span> <span class="n">HB</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">K</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">)</span>
+    <span class="n">ip</span> <span class="o">=</span> <span class="n">IP</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">)</span>
+
+    <span class="n">lgERA</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ERA</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">))</span>
+    <span class="n">lgHR</span> <span class="o">=</span> <span class="n">compute_league_stats</span><span class="p">(</span><span class="n">filtered_df</span> <span class="p">,</span><span class="s1">&#39;HR&#39;</span><span class="p">)</span>
+    <span class="n">lgBB</span> <span class="o">=</span> <span class="n">compute_league_stats</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">,</span> <span class="s1">&#39;BB&#39;</span><span class="p">)</span>
+    <span class="n">lgHB</span> <span class="o">=</span> <span class="n">compute_league_stats</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">,</span> <span class="s1">&#39;HB&#39;</span><span class="p">)</span>
+    <span class="n">lgK</span> <span class="o">=</span> <span class="n">compute_league_stats</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">,</span> <span class="s1">&#39;SO&#39;</span><span class="p">)</span>
+    <span class="n">lgIP</span> <span class="o">=</span> <span class="n">compute_league_stats</span><span class="p">(</span><span class="n">filtered_df</span><span class="p">,</span> <span class="s1">&#39;IP&#39;</span><span class="p">)</span>
+
+
+    <span class="n">const</span> <span class="o">=</span> <span class="n">compute_FIP_constant</span><span class="p">(</span><span class="n">lgERA</span><span class="p">,</span> <span class="n">lgHR</span><span class="p">,</span> <span class="n">lgBB</span><span class="p">,</span> <span class="n">lgHB</span><span class="p">,</span> <span class="n">lgK</span><span class="p">,</span> <span class="n">lgIP</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">compute_partial_FIP</span><span class="p">(</span><span class="n">hr</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">hb</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">ip</span><span class="p">)</span> <span class="p">,</span> <span class="n">const</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;FIP&#39;</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<span class="k">def</span> <span class="nf">compute_league_stats</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">stat</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">stat</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="s1">&#39;object&#39;</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">change_type</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="k">def</span> <span class="nf">compute_partial_FIP</span><span class="p">(</span><span class="n">hr</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">hb</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">ip</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">bb</span><span class="p">,</span><span class="n">hb</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">res_mid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">hr</span><span class="p">,</span> <span class="mi">13</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">res_mid</span><span class="p">,</span> <span class="n">res</span><span class="p">)</span>
+    <span class="n">res_mid</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">res_mid</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="n">ip</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="k">def</span> <span class="nf">compute_FIP_constant</span><span class="p">(</span><span class="n">era</span><span class="p">,</span> <span class="n">hr</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">hb</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">ip</span><span class="p">):</span>
+    <span class="n">partial_FIP</span> <span class="o">=</span> <span class="n">compute_partial_FIP</span><span class="p">(</span><span class="n">hr</span><span class="p">,</span> <span class="n">bb</span><span class="p">,</span> <span class="n">hb</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">ip</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">era</span><span class="p">,</span> <span class="n">partial_FIP</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="c1">#TODO: check, doesn&#39;t work for min_ip = 0</span>
+<div class="viewcode-block" id="FIP_minus"><a class="viewcode-back" href="../../stats_local.html#local.stats.FIP_minus">[docs]</a><span class="k">def</span> <span class="nf">FIP_minus</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_ip</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    FIP through percentage, 100.0 is league average. Available for pitchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :param min_pa: Minimal number of plate appearances(PA). All players with smaller number of PA will be neglected from computation</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">fip</span> <span class="o">=</span> <span class="n">FIP</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">min_ip</span><span class="p">)</span>
+    <span class="n">lgfip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">fip</span><span class="p">)</span>
+
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">lgfip</span><span class="p">,</span><span class="n">fip</span><span class="p">),</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">res</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;FIP-&quot;</span>
+
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<span class="c1">################</span>
+<span class="c1">#FIELD</span>
+
+<div class="viewcode-block" id="PO"><a class="viewcode-back" href="../../stats_local.html#local.stats.PO">[docs]</a><span class="k">def</span> <span class="nf">PO</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of played outs. Available for field players.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;PO&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="A"><a class="viewcode-back" href="../../stats_local.html#local.stats.A">[docs]</a><span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of assists. Available for field players.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="E"><a class="viewcode-back" href="../../stats_local.html#local.stats.E">[docs]</a><span class="k">def</span> <span class="nf">E</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of errors. Available for field players.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="F"><a class="viewcode-back" href="../../stats_local.html#local.stats.F">[docs]</a><span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of fieldings. Available for field players.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">),</span> <span class="s1">&#39;int64&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="FA"><a class="viewcode-back" href="../../stats_local.html#local.stats.FA">[docs]</a><span class="k">def</span> <span class="nf">FA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of successful actions in field to errors. Available for field players.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;FA&#39;</span><span class="p">),</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="EA"><a class="viewcode-back" href="../../stats_local.html#local.stats.EA">[docs]</a><span class="k">def</span> <span class="nf">EA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Error average. Available for field players.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;EA&#39;</span><span class="p">),</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span></div>
+
+<span class="c1">#TODO: add DEF</span>
+
+<span class="c1">#################</span>
+<span class="c1">#Catcher</span>
+
+<div class="viewcode-block" id="CSA"><a class="viewcode-back" href="../../stats_local.html#local.stats.CSA">[docs]</a><span class="k">def</span> <span class="nf">CSA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Caught stealing average, shown as fraction, e.g., 0.97. Available for catchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;CSA&#39;</span><span class="p">),</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">divide</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+<div class="viewcode-block" id="PB"><a class="viewcode-back" href="../../stats_local.html#local.stats.PB">[docs]</a><span class="k">def</span> <span class="nf">PB</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Number of uncatched pitches. Available for catchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;PB&#39;</span><span class="p">),</span> <span class="s1">&#39;int64&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PBA"><a class="viewcode-back" href="../../stats_local.html#local.stats.PBA">[docs]</a><span class="k">def</span> <span class="nf">PBA</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Uncatched pitches average. Available for catchers.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">change_type</span><span class="p">(</span><span class="n">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="s1">&#39;PBA&#39;</span><span class="p">),</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span></div>
+
+<span class="nd">@check_loaded</span>
+<span class="k">def</span> <span class="nf">headers</span><span class="p">(</span><span class="n">df</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Shows headers of loaded Dataframe.</span>
+
+<span class="sd">    :params df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :returns: List of headers in the loaded Dataframe.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">values</span>
+
+<span class="nd">@check_loaded</span>
+<span class="nd">@check_valid_category</span>
+<span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">category</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get values from the Dataframe *df* based on the given category.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :param category: String name of the category to be returned.</span>
+<span class="sd">    :returns: Column with data from given category.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">category</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">category</span><span class="p">]</span>
+
+<span class="nd">@check_loaded</span>
+<span class="nd">@check_valid_category</span>
+<span class="k">def</span> <span class="nf">compute_columns_statistics</span><span class="p">(</span><span class="n">df</span> <span class="p">,</span><span class="n">category</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the basic statistics such as mean, median, percentile, var and std for given category.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containg parsed csv with data.</span>
+<span class="sd">    :param category: String name of the category to compute the statistics on.</span>
+<span class="sd">    :returns: Statistics on given category.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">category</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+
+<span class="nd">@check_loaded</span>
+<span class="nd">@check_valid_category</span>
+<span class="k">def</span> <span class="nf">compute_statistics</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">rng</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Computes the basic statistics such as mean, median, percentile, var and std for given category.</span>
+<span class="sd">    Only consider entries in given range.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containg parsed csv with data.</span>
+<span class="sd">    :param category: String name of the category to compute the statisics on.</span>
+<span class="sd">    :param rng: Tuple with lower and upper range values.</span>
+<span class="sd">    :returns: Statistics on given category for given range.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">df</span><span class="p">[</span><span class="n">category</span><span class="p">][</span><span class="n">rng</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">rng</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+
+<span class="nd">@check_loaded</span>
+<span class="nd">@check_valid_category</span>
+<span class="k">def</span> <span class="nf">sort_values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">by_category</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sort values in the dataframe by given category.</span>
+
+<span class="sd">    :param df: Pandas dataframe containg parsed csv with data.</span>
+<span class="sd">    :param by_category: String name of the category that is to be used to sort the data.</span>
+<span class="sd">    :param ascending: Whether to sort data in ascending order or not.</span>
+<span class="sd">    :returns: Pandas Dataframe with data sorted by the category.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">([</span><span class="n">by_category</span><span class="p">],</span> <span class="n">ascending</span> <span class="o">=</span> <span class="n">ascending</span><span class="p">)</span>
+
+<span class="nd">@check_loaded</span>
+<span class="k">def</span> <span class="nf">names_to_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">computed_data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Associate values in *computed_data* Series with the names from *df* Dataframe. Paired based on indices.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containg parsed csv with data.</span>
+<span class="sd">    :param compute_data: Series with computed data, such as those coming out of statistic functions.</span>
+<span class="sd">    :returns: Pandas Dataframe with names and values of the computed data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Jméno&#39;</span><span class="p">:</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Jméno&#39;</span><span class="p">],</span> <span class="n">computed_data</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">computed_data</span><span class="p">})</span>
+
+<div class="viewcode-block" id="sort_computed_data"><a class="viewcode-back" href="../../stats_local.html#local.stats.sort_computed_data">[docs]</a><span class="k">def</span> <span class="nf">sort_computed_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">computed_data</span><span class="p">,</span> <span class="n">ascending</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sort computed data values and connect them with the names from Dataframe *df*.</span>
+
+<span class="sd">    :param df: Pandas Dataframe containing parsed csv with data.</span>
+<span class="sd">    :param computed_data: Series with computed data, such as those coming out of statistic functions.</span>
+<span class="sd">    :param ascending: Whether to sort data in the ascending order on not.</span>
+<span class="sd">    :returns: Pandas Dataframe with *computed_data* sorted and joined with the names of players.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">merged_df</span> <span class="o">=</span> <span class="n">names_to_data</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">computed_data</span><span class="p">)</span>
+    <span class="n">sort</span> <span class="o">=</span> <span class="n">sort_values</span><span class="p">(</span><span class="n">merged_df</span><span class="p">,</span> <span class="n">computed_data</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">ascending</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sort</span></div>
+
+<span class="c1">#TODO: change type in change_type function to type of df_stat</span>
+<span class="k">def</span> <span class="nf">min_stat_values</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">df_stat</span><span class="p">,</span> <span class="n">stat</span><span class="p">,</span> <span class="n">min_stat_value</span><span class="p">):</span>
+    <span class="n">c_type</span> <span class="o">=</span> <span class="n">change_type</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">stat</span><span class="p">],</span> <span class="s1">&#39;float64&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df_stat</span><span class="p">[</span><span class="n">c_type</span> <span class="o">&gt;=</span> <span class="n">min_stat_value</span><span class="p">]</span>
+
+<span class="c1"># Helper functions</span>
+<span class="k">def</span> <span class="nf">create_player_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">create_summed_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># helper stat functions</span>
+<div class="viewcode-block" id="nan_to_zero"><a class="viewcode-back" href="../../stats_local.html#local.stats.nan_to_zero">[docs]</a><span class="k">def</span> <span class="nf">nan_to_zero</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Change all NaN values to 0.</span>
+
+<span class="sd">    :param data: Data where the NaN values should be swapped.</span>
+<span class="sd">    :returns: Data with NaN values swapped for 0.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">data</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="change_type"><a class="viewcode-back" href="../../stats_local.html#local.stats.change_type">[docs]</a><span class="k">def</span> <span class="nf">change_type</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Change type of the Series to given type. All &#39;,&#39; are changed to &#39;.&#39; and all &#39;%&#39; are erased to work with statistic computation.</span>
+
+<span class="sd">    :param data: Series to change the type of.</span>
+<span class="sd">    :param t: Type to change to.</span>
+<span class="sd">    :returns: Series with type changed to *t*.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span> <span class="o">==</span> <span class="n">t</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">data</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">d</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">t</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="remove_nan"><a class="viewcode-back" href="../../stats_local.html#local.stats.remove_nan">[docs]</a><span class="k">def</span> <span class="nf">remove_nan</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Remove all NaN values from data.</span>
+
+<span class="sd">    :param data: Data to remove NaN values from.</span>
+<span class="sd">    :returns: Data with NaN values removed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_not</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="p">))]</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zuzana Ferkova.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,388 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>scrape_data &mdash; BaseballCZ-Statistics 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> BaseballCZ-Statistics
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../documentation.html">Documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../contact.html">Contacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contribute.html">Contribute</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">BaseballCZ-Statistics</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Module code</a> &raquo;</li>
+        
+      <li>scrape_data</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for scrape_data</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Scraping data from page `baseball.cz &lt;http://baseball.cz&gt;`_. Uses `Selenium &lt;http://selenium-python.readthedocs.io/&gt;`_</span>
+<span class="sd">in combination with Firefox, or Chrome webdriver to save data locally. These can be then sent to FTP server as desired.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">selenium</span> <span class="k">import</span> <span class="n">webdriver</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">constants</span> <span class="k">as</span> <span class="nn">cs</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.firefox.options</span> <span class="k">import</span> <span class="n">Options</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver</span> <span class="k">import</span> <span class="n">ChromeOptions</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="k">import</span> <span class="n">Select</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">ftplib</span>
+
+<div class="viewcode-block" id="setup_chrome_opt"><a class="viewcode-back" href="../scrape_data.html#scrape_data.setup_chrome_opt">[docs]</a><span class="k">def</span> <span class="nf">setup_chrome_opt</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets up options for Chrome webdriver. Based on defined `constants &lt;constants.html&gt;`_ it chooses where</span>
+<span class="sd">    to save data and where Chrome binary and Chrome driver can be found.</span>
+<span class="sd">    Sets following options:</span>
+
+<span class="sd">    * *download.default_directory: constants.saveDir*</span>
+<span class="sd">    * *download.prompt_for_download: False*</span>
+<span class="sd">    * *download.directory_upgrade: True*</span>
+<span class="sd">    * *safebrowsing.enaled: True*</span>
+
+<span class="sd">    :returns: Set Chrome webdriver object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">chrome_options</span> <span class="o">=</span> <span class="n">ChromeOptions</span><span class="p">()</span>
+    <span class="n">chrome_options</span><span class="o">.</span><span class="n">binary_location</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">GOOGLE_CHROME_BIN</span>
+    <span class="n">chrome_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--disable-gpu&#39;</span><span class="p">)</span>
+    <span class="n">chrome_options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--no-sandbox&#39;</span><span class="p">)</span>
+    <span class="n">prefs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;download.default_directory&#39;</span> <span class="p">:</span> <span class="n">cs</span><span class="o">.</span><span class="n">saveDir</span><span class="p">,</span>
+    <span class="s2">&quot;download.prompt_for_download&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">&quot;download.directory_upgrade&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;safebrowsing.enabled&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+    <span class="n">chrome_options</span><span class="o">.</span><span class="n">add_experimental_option</span><span class="p">(</span><span class="s1">&#39;prefs&#39;</span><span class="p">,</span> <span class="n">prefs</span><span class="p">)</span>
+    <span class="c1">#chrome_options.add_argument(&#39;headless&#39;)</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Chrome</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">cs</span><span class="o">.</span><span class="n">CHROMEDRIVER_PATH</span><span class="p">,</span><span class="n">chrome_options</span><span class="o">=</span><span class="n">chrome_options</span><span class="p">)</span>
+
+
+    <span class="k">return</span> <span class="n">driver</span></div>
+
+<div class="viewcode-block" id="setup_firefox_opt"><a class="viewcode-back" href="../scrape_data.html#scrape_data.setup_firefox_opt">[docs]</a><span class="k">def</span> <span class="nf">setup_firefox_opt</span><span class="p">():</span>
+
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Sets up options for Firefox webdriver. Based on defined `constants &lt;constants.html&gt;`_ it chooses where to save data.</span>
+<span class="sd">    Sets following options:</span>
+
+<span class="sd">    * *--headless*</span>
+<span class="sd">    * *browser.download.folderList:2*</span>
+<span class="sd">    * *browser.download.manager.showWhenStarting: False*</span>
+<span class="sd">    * *browser.download.dir: constants.saveDir*</span>
+<span class="sd">    * *browser.helperApps.neverAsk.saveToDisk: application/csv,text/csv,application/force-download*</span>
+
+<span class="sd">    :returns: Set Firefox webdriver object</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">options</span> <span class="o">=</span> <span class="n">Options</span><span class="p">()</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--headless&#39;</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;browser.download.folderList&quot;</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;browser.download.manager.showWhenStarting&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;browser.download.dir&quot;</span><span class="p">,</span> <span class="n">get_saveDir</span><span class="p">())</span>
+    <span class="n">options</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;browser.helperApps.neverAsk.saveToDisk&quot;</span><span class="p">,</span> <span class="s2">&quot;application/csv,text/csv,application/force-download&quot;</span><span class="p">)</span>
+    <span class="n">driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">firefox_options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">driver</span></div>
+
+<div class="viewcode-block" id="download_stats"><a class="viewcode-back" href="../scrape_data.html#scrape_data.download_stats">[docs]</a><span class="k">def</span> <span class="nf">download_stats</span><span class="p">(</span><span class="n">category</span> <span class="o">=</span> <span class="n">cs</span><span class="o">.</span><span class="n">CATEGORIES</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">team_stats</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">browser</span><span class="o">=</span><span class="s1">&#39;firefox&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Locally saves statistics csv from `baseball.cz &lt;http://baseball.cz&gt;`_ based on the given category.</span>
+<span class="sd">    File is stored in save directory defined in `constants &lt;contants.html&gt;_` script.</span>
+<span class="sd">    Default values are for *individual batter*, using Firefox.</span>
+
+<span class="sd">    :param category: Category of the statistics. Categories are defined  in `constants &lt;constants.html&gt;`_.</span>
+<span class="sd">    :param team_stats: *(bool)* Whether the team or individual stats should be downloaded.</span>
+<span class="sd">    :param browser: &#39;firefox&#39; to use Firefox webdriver, otherwise Chrome webdriver will be used.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">browser</span> <span class="o">==</span> <span class="s1">&#39;firefox&#39;</span><span class="p">:</span>
+        <span class="n">driver</span> <span class="o">=</span> <span class="n">setup_firefox_opt</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">driver</span> <span class="o">=</span> <span class="n">setup_chrome_opt</span><span class="p">()</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;https://www.baseball.cz/modules.php?op=modload&amp;name=liga&amp;file=index&amp;do=statx&amp;akce=432&amp;pda=2&amp;admina=&#39;</span><span class="p">)</span>
+
+        <span class="n">cat</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_name</span><span class="p">(</span><span class="s1">&#39;xco&#39;</span><span class="p">))</span>
+        <span class="n">cat</span><span class="o">.</span><span class="n">select_by_value</span><span class="p">(</span><span class="n">category</span><span class="p">)</span>
+
+        <span class="n">typ</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_name</span><span class="p">(</span><span class="s1">&#39;xtyp&#39;</span><span class="p">))</span>
+        <span class="n">typ</span><span class="o">.</span><span class="n">select_by_index</span><span class="p">(</span><span class="n">cs</span><span class="o">.</span><span class="n">TYPES</span><span class="p">[</span><span class="s2">&quot;týmový&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="n">team_stats</span> <span class="k">else</span> <span class="n">cs</span><span class="o">.</span><span class="n">TYPES</span><span class="p">[</span><span class="s1">&#39;individuální&#39;</span><span class="p">])</span>
+
+        <span class="n">elem</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_xpath</span><span class="p">(</span><span class="s2">&quot;//*[contains(text(), &#39;Exportovat&#39;)]&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">elem</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+        <span class="c1">#Wait for the download 0.8 minutes</span>
+        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.8</span><span class="p">)</span>
+
+        <span class="c1">#TODO: better naming conventions for team/individual</span>
+        <span class="n">downloaded_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_saveDir</span><span class="p">(),</span> <span class="s2">&quot;stats.csv&quot;</span><span class="p">)</span>
+        <span class="n">new_filename</span> <span class="o">=</span> <span class="s2">&quot;stats_</span><span class="si">{}</span><span class="s2">_</span><span class="si">{}</span><span class="s2">.csv&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">category</span><span class="p">,</span> <span class="s1">&#39;team&#39;</span> <span class="k">if</span> <span class="n">team_stats</span> <span class="k">else</span> <span class="s1">&#39;individual&#39;</span><span class="p">)</span>
+        <span class="n">new_filepath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">get_saveDir</span><span class="p">(),</span> <span class="n">new_filename</span><span class="p">)</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">downloaded_file</span><span class="p">,</span> <span class="n">new_filepath</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">driver</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="get_saveDir"><a class="viewcode-back" href="../scrape_data.html#scrape_data.get_saveDir">[docs]</a><span class="k">def</span> <span class="nf">get_saveDir</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return save directory defined in `constants &lt;constants.html&gt;`_.</span>
+<span class="sd">    :returns: String containing path to save directory.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">cs</span><span class="o">.</span><span class="n">saveDir</span></div>
+
+<div class="viewcode-block" id="cleanup_dir"><a class="viewcode-back" href="../scrape_data.html#scrape_data.cleanup_dir">[docs]</a><span class="k">def</span> <span class="nf">cleanup_dir</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Removes all data in save directory defined in `constants &lt;constants.html&gt;`_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">get_saveDir</span><span class="p">())</span>
+
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{}{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">get_saveDir</span><span class="p">(),</span><span class="n">f</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="download_team_stats"><a class="viewcode-back" href="../scrape_data.html#scrape_data.download_team_stats">[docs]</a><span class="k">def</span> <span class="nf">download_team_stats</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Downloads all team statistics and saves them to the save directory defined in `constants &lt;constants.html&gt;`_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#TODO improve</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Started downloading team stats.&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">CATEGORIES</span><span class="p">:</span>
+        <span class="n">download_stats</span><span class="p">(</span><span class="n">cat</span><span class="p">,</span> <span class="n">team_stats</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="download_single_stats"><a class="viewcode-back" href="../scrape_data.html#scrape_data.download_single_stats">[docs]</a><span class="k">def</span> <span class="nf">download_single_stats</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Downloads all individual statistics and saves them to the save director defined in `constants &lt;constants.html&gt;`_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#TODO improve</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Started downloading single stats.&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">cs</span><span class="o">.</span><span class="n">CATEGORIES</span><span class="p">:</span>
+        <span class="n">download_stats</span><span class="p">(</span><span class="n">cat</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done.&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="download_all"><a class="viewcode-back" href="../scrape_data.html#scrape_data.download_all">[docs]</a><span class="k">def</span> <span class="nf">download_all</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Downloads all individual and team statistics and saves them to the save directory defined in `constants &lt;constants.html&gt;`_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">download_team_stats</span><span class="p">()</span>
+    <span class="n">download_single_stats</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="send_to_ftp"><a class="viewcode-back" href="../scrape_data.html#scrape_data.send_to_ftp">[docs]</a><span class="k">def</span> <span class="nf">send_to_ftp</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Allows to send all files from directory *./data/* to FTP server. Due to its use on a server and security</span>
+<span class="sd">    reasons, information about the FTP server are set as enviromental variables.</span>
+
+<span class="sd">    Enviromental variables:</span>
+
+<span class="sd">        * FTP_SERVER -- http to FTP host</span>
+<span class="sd">        * FTP_PORT -- number of the opened FTP port</span>
+<span class="sd">        * FTP_NAME -- login name to FTP server</span>
+<span class="sd">        * FTP_PASSWRD -- login password to FTP server</span>
+<span class="sd">        * FTP_PATH -- path on FTP server where files should be sent to</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ftp</span> <span class="o">=</span> <span class="n">ftplib</span><span class="o">.</span><span class="n">FTP</span><span class="p">()</span>
+    <span class="n">ftp</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;FTP_SERVER&#39;</span><span class="p">],</span> <span class="nb">int</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;FTP_PORT&#39;</span><span class="p">]))</span> <span class="c1">#host, port</span>
+    <span class="n">ftp</span><span class="o">.</span><span class="n">login</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;FTP_NAME&#39;</span><span class="p">],</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;FTP_PASSWRD&#39;</span><span class="p">])</span>
+    <span class="n">ftp</span><span class="o">.</span><span class="n">cwd</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;FTP_PATH&#39;</span><span class="p">])</span>
+
+    <span class="n">files</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">opened</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span><span class="n">f</span><span class="p">),</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">opened</span><span class="p">)</span>
+        <span class="n">ftp</span><span class="o">.</span><span class="n">storbinary</span><span class="p">(</span><span class="s1">&#39;STOR </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">),</span> <span class="n">opened</span><span class="p">)</span>
+        <span class="n">opened</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">ftp</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zuzana Ferkova.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

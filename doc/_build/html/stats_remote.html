@@ -1,0 +1,1282 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Statistic Computation (stats.py) &mdash; BaseballCZ-Statistics 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BaseballCZ-Statistics
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BaseballCZ-Statistics</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Statistic Computation (stats.py)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/stats_remote.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-remote.client.stats">
+<span id="statistic-computation-stats-py"></span><h1>Statistic Computation (stats.py)<a class="headerlink" href="#module-remote.client.stats" title="Permalink to this headline">¶</a></h1>
+<p>Main script for computation of all the statistics. Appreciation goes to <a class="reference external" href="https://baseball-stat.cz">Baseball Stats CZ</a> for
+help and explanation with different statistics and equations.</p>
+<dl class="function">
+<dt id="remote.client.stats.A">
+<code class="descclassname">remote.client.stats.</code><code class="descname">A</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#A"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.A" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of assists. Available for field players.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.AB">
+<code class="descclassname">remote.client.stats.</code><code class="descname">AB</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#AB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.AB" title="Permalink to this definition">¶</a></dt>
+<dd><p>At bat, doesn&#8217;t count sacrifice, walks and hit by pitch. Available for pitchers and batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.BA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">BA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#BA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.BA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Batting average for batters and pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.BAA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">BAA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#BAA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.BAA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Batting average against. Available to pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.BABIP">
+<code class="descclassname">remote.client.stats.</code><code class="descname">BABIP</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#BABIP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.BABIP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Batting average on balls in play. Available for batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.BB">
+<code class="descclassname">remote.client.stats.</code><code class="descname">BB</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#BB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.BB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases on balls, free bases given to opponent batters. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.BB9">
+<code class="descclassname">remote.client.stats.</code><code class="descname">BB9</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#BB9"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.BB9" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases on balls per 9 innings. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.BB_perct">
+<code class="descclassname">remote.client.stats.</code><code class="descname">BB_perct</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#BB_perct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.BB_perct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Percentage of free bases to plate appearances. Available for batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.BFP">
+<code class="descclassname">remote.client.stats.</code><code class="descname">BFP</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#BFP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.BFP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of batters pitcher pitched to. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.CG">
+<code class="descclassname">remote.client.stats.</code><code class="descname">CG</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#CG"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.CG" title="Permalink to this definition">¶</a></dt>
+<dd><p>Complete games. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.CS">
+<code class="descclassname">remote.client.stats.</code><code class="descname">CS</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#CS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.CS" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of times caught stealing base for batters, or number of players caught stealing for catchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.CSA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">CSA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#CSA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.CSA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Caught stealing average, shown as fraction, e.g., 0.97. Available for catchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.E">
+<code class="descclassname">remote.client.stats.</code><code class="descname">E</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#E"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.E" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of errors. Available for field players.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.EA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">EA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#EA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.EA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Error average. Available for field players.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.ER">
+<code class="descclassname">remote.client.stats.</code><code class="descname">ER</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#ER"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.ER" title="Permalink to this definition">¶</a></dt>
+<dd><p>Earned runs. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.ERA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">ERA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#ERA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.ERA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Earned run average. Number of runs allowed per 9 innings. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.F">
+<code class="descclassname">remote.client.stats.</code><code class="descname">F</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#F"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.F" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of fieldings. Available for field players.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.FA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">FA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#FA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.FA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of successful actions in field to errors. Available for field players.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.FIP">
+<code class="descclassname">remote.client.stats.</code><code class="descname">FIP</code><span class="sig-paren">(</span><em>df</em>, <em>min_ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#FIP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.FIP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fielding independent pitching. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</li>
+<li><strong>min_pa</strong> &#8211; Minimal number of plate appearances(PA). All players with smaller number of PA will be neglected from computation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.FIP_minus">
+<code class="descclassname">remote.client.stats.</code><code class="descname">FIP_minus</code><span class="sig-paren">(</span><em>df</em>, <em>min_ip</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#FIP_minus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.FIP_minus" title="Permalink to this definition">¶</a></dt>
+<dd><p>FIP through percentage, 100.0 is league average. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</li>
+<li><strong>min_pa</strong> &#8211; Minimal number of plate appearances(PA). All players with smaller number of PA will be neglected from computation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.G">
+<code class="descclassname">remote.client.stats.</code><code class="descname">G</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#G"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.G" title="Permalink to this definition">¶</a></dt>
+<dd><p>Games played. Available for pitchers and batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.H">
+<code class="descclassname">remote.client.stats.</code><code class="descname">H</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#H"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.H" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of hits for batters, or number of hits allowed for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.HB">
+<code class="descclassname">remote.client.stats.</code><code class="descname">HB</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#HB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.HB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hit batters. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.HP">
+<code class="descclassname">remote.client.stats.</code><code class="descname">HP</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#HP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.HP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of hit by pitch, for batters and pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.HR">
+<code class="descclassname">remote.client.stats.</code><code class="descname">HR</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#HR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.HR" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of home runs for batters, or number of home runs allowed per pitcher.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.IP">
+<code class="descclassname">remote.client.stats.</code><code class="descname">IP</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#IP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.IP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Innings pitched. Available for pitchers and catchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.ISO">
+<code class="descclassname">remote.client.stats.</code><code class="descname">ISO</code><span class="sig-paren">(</span><em>df</em>, <em>min_pa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#ISO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.ISO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Isolated power, computed as ratio between slugging and batting average. Available for batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.K">
+<code class="descclassname">remote.client.stats.</code><code class="descname">K</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#K"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.K" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of strikeout. Available for batters and pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.K9">
+<code class="descclassname">remote.client.stats.</code><code class="descname">K9</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#K9"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.K9" title="Permalink to this definition">¶</a></dt>
+<dd><p>Strikouts per 9 innings. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.KA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">KA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#KA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.KA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Strikeout average. Number of strikeouts per at bad, available for batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.KtoBB">
+<code class="descclassname">remote.client.stats.</code><code class="descname">KtoBB</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#KtoBB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.KtoBB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ratio of strikeouts to bases on balls. Available to pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.L">
+<code class="descclassname">remote.client.stats.</code><code class="descname">L</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#L"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.L" title="Permalink to this definition">¶</a></dt>
+<dd><p>Losses. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.OBP">
+<code class="descclassname">remote.client.stats.</code><code class="descname">OBP</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#OBP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.OBP" title="Permalink to this definition">¶</a></dt>
+<dd><p>On-base percentage, available for batters and pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.OPS">
+<code class="descclassname">remote.client.stats.</code><code class="descname">OPS</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#OPS"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.OPS" title="Permalink to this definition">¶</a></dt>
+<dd><p>On-base percentage, plus slugging. Available for batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.OPSA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">OPSA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#OPSA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.OPSA" title="Permalink to this definition">¶</a></dt>
+<dd><p>On-base plus slugging average. Available to pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.PAB">
+<code class="descclassname">remote.client.stats.</code><code class="descname">PAB</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#PAB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.PAB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plate appearances. Counts all appearances at plate. Available for batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.PB">
+<code class="descclassname">remote.client.stats.</code><code class="descname">PB</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#PB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.PB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of uncatched pitches. Available for catchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.PBA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">PBA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#PBA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.PBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uncatched pitches average. Available for catchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.PO">
+<code class="descclassname">remote.client.stats.</code><code class="descname">PO</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#PO"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.PO" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of played outs. Available for field players.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.R">
+<code class="descclassname">remote.client.stats.</code><code class="descname">R</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#R"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.R" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of runs to home plate for batters, or number of allowed runs for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.RBI">
+<code class="descclassname">remote.client.stats.</code><code class="descname">RBI</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#RBI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.RBI" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of batted runs, available for batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.SA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">SA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#SA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.SA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Slugging for batters, or slugging against for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.SB">
+<code class="descclassname">remote.client.stats.</code><code class="descname">SB</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#SB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.SB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of stolen bases for batters, or catchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.SB_perct">
+<code class="descclassname">remote.client.stats.</code><code class="descname">SB_perct</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#SB_perct"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.SB_perct" title="Permalink to this definition">¶</a></dt>
+<dd><p>Percentage of successfully stolen bases. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.SF">
+<code class="descclassname">remote.client.stats.</code><code class="descname">SF</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#SF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.SF" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sacrificial fly-out, available for batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.SH">
+<code class="descclassname">remote.client.stats.</code><code class="descname">SH</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#SH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.SH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sacrificial hit. Available for batters and pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.SV">
+<code class="descclassname">remote.client.stats.</code><code class="descname">SV</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#SV"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.SV" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.TB">
+<code class="descclassname">remote.client.stats.</code><code class="descname">TB</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#TB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.TB" title="Permalink to this definition">¶</a></dt>
+<dd><p>Total bases hit for batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.W">
+<code class="descclassname">remote.client.stats.</code><code class="descname">W</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#W"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.W" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wins. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.WA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">WA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#WA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.WA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Win average. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.WHIP">
+<code class="descclassname">remote.client.stats.</code><code class="descname">WHIP</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#WHIP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.WHIP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Walks and hits per inning pitched. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.WP">
+<code class="descclassname">remote.client.stats.</code><code class="descname">WP</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#WP"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.WP" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wild pitch. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.WPA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">WPA</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#WPA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.WPA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Wild pitches average, number of wild pitches per 9 innings. Available for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.XBH">
+<code class="descclassname">remote.client.stats.</code><code class="descname">XBH</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#XBH"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.XBH" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of extra base hits for batters, or number of extra base hits allowed for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.change_type">
+<code class="descclassname">remote.client.stats.</code><code class="descname">change_type</code><span class="sig-paren">(</span><em>data</em>, <em>t</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#change_type"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.change_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change type of the Series to given type. All &#8216;,&#8217; are changed to &#8216;.&#8217; and all &#8216;%&#8217; are erased to work with statistic computation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>data</strong> &#8211; Series to change the type of.</li>
+<li><strong>t</strong> &#8211; Type to change to.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Series with type changed to <em>t</em>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.double">
+<code class="descclassname">remote.client.stats.</code><code class="descname">double</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#double"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.double" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of double hits for batters, or number of doubles allowed for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.nan_to_zero">
+<code class="descclassname">remote.client.stats.</code><code class="descname">nan_to_zero</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#nan_to_zero"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.nan_to_zero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Change all NaN values to 0.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> &#8211; Data where the NaN values should be swapped.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Data with NaN values swapped for 0.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.remove_nan">
+<code class="descclassname">remote.client.stats.</code><code class="descname">remove_nan</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#remove_nan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.remove_nan" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all NaN values from data.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> &#8211; Data to remove NaN values from.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Data with NaN values removed.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.single">
+<code class="descclassname">remote.client.stats.</code><code class="descname">single</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#single"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.single" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of single hits for batters, or number of singles allowed for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.sort_computed_data">
+<code class="descclassname">remote.client.stats.</code><code class="descname">sort_computed_data</code><span class="sig-paren">(</span><em>df</em>, <em>computed_data</em>, <em>ascending=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#sort_computed_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.sort_computed_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sort computed data values and connect them with the names from Dataframe <em>df</em>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</li>
+<li><strong>computed_data</strong> &#8211; Series with computed data, such as those coming out of statistic functions.</li>
+<li><strong>ascending</strong> &#8211; Whether to sort data in the ascending order on not.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Pandas Dataframe with <em>computed_data</em> sorted and joined with the names of players.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.triple">
+<code class="descclassname">remote.client.stats.</code><code class="descname">triple</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#triple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.triple" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of triple hits for batters, or number of triples allowed for pitchers.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Pandas Series with given statistics, for each player.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.wOBA">
+<code class="descclassname">remote.client.stats.</code><code class="descname">wOBA</code><span class="sig-paren">(</span><em>df</em>, <em>min_pa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#wOBA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.wOBA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weighted on-base average. Can be adjusted to be computed only for players with certain
+number on plate appearances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</li>
+<li><strong>min_pa</strong> &#8211; Minimal number of plate appearances(PA). All players with smaller number of PA will be neglected from computation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.wRC">
+<code class="descclassname">remote.client.stats.</code><code class="descname">wRC</code><span class="sig-paren">(</span><em>df</em>, <em>min_pa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#wRC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.wRC" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weighted runs created. Available for batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</li>
+<li><strong>min_pa</strong> &#8211; Minimal number of plate appearances(PA). All players with smaller number of PA will be neglected from computation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.client.stats.wRC_plus">
+<code class="descclassname">remote.client.stats.</code><code class="descname">wRC_plus</code><span class="sig-paren">(</span><em>df</em>, <em>min_pa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#wRC_plus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.wRC_plus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Weighted run created plus. 100.0 is league average. Available for batters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>df</strong> &#8211; Pandas Dataframe containing parsed csv with data.</li>
+<li><strong>min_pa</strong> &#8211; Minimal number of plate appearances(PA). All players with smaller number of PA will be neglected from computation</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Pandas Series with given statistics, for each player. NAN values are substituted for 0.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zuzana Ferkova.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,335 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Data Scraping &mdash; BaseballCZ-Statistics 0.0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="index.html" class="icon icon-home"> BaseballCZ-Statistics
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
+</ul>
+<p class="caption"><span class="caption-text">Help &amp; Contribution</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="contact.html">Contacts</a></li>
+<li class="toctree-l1"><a class="reference internal" href="contribute.html">Contribute</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">BaseballCZ-Statistics</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Data Scraping</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/scrape_data.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-remote.server.scrape_data">
+<span id="data-scraping"></span><h1>Data Scraping<a class="headerlink" href="#module-remote.server.scrape_data" title="Permalink to this headline">¶</a></h1>
+<p>Scraping data from page <a class="reference external" href="http://baseball.cz">baseball.cz</a>. Uses <a class="reference external" href="http://selenium-python.readthedocs.io/">Selenium</a>
+in combination with Firefox, or Chrome webdriver to save data locally. These can be then sent to FTP server as desired.</p>
+<dl class="function">
+<dt id="remote.server.scrape_data.cleanup_dir">
+<code class="descclassname">remote.server.scrape_data.</code><code class="descname">cleanup_dir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/server/scrape_data.html#cleanup_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.server.scrape_data.cleanup_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Removes all data in save directory defined in <a class="reference external" href="constants.html">constants</a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.server.scrape_data.download_all">
+<code class="descclassname">remote.server.scrape_data.</code><code class="descname">download_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/server/scrape_data.html#download_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.server.scrape_data.download_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads all individual and team statistics and saves them to the save directory defined in <a class="reference external" href="constants.html">constants</a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.server.scrape_data.download_single_stats">
+<code class="descclassname">remote.server.scrape_data.</code><code class="descname">download_single_stats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/server/scrape_data.html#download_single_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.server.scrape_data.download_single_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads all individual statistics and saves them to the save director defined in <a class="reference external" href="constants.html">constants</a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.server.scrape_data.download_stats">
+<code class="descclassname">remote.server.scrape_data.</code><code class="descname">download_stats</code><span class="sig-paren">(</span><em>category='palka'</em>, <em>team_stats=False</em>, <em>browser='firefox'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/server/scrape_data.html#download_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.server.scrape_data.download_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Locally saves statistics csv from <a class="reference external" href="http://baseball.cz">baseball.cz</a> based on the given category.
+File is stored in save directory defined in <cite>constants &lt;contants.html&gt;_</cite> script.
+Default values are for <em>individual batter</em>, using Firefox.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>category</strong> &#8211; <p>Category of the statistics. Categories are defined  in <a class="reference external" href="constants.html">constants</a>.</p>
+</li>
+<li><strong>team_stats</strong> &#8211; <em>(bool)</em> Whether the team or individual stats should be downloaded.</li>
+<li><strong>browser</strong> &#8211; &#8216;firefox&#8217; to use Firefox webdriver, otherwise Chrome webdriver will be used.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.server.scrape_data.download_team_stats">
+<code class="descclassname">remote.server.scrape_data.</code><code class="descname">download_team_stats</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/server/scrape_data.html#download_team_stats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.server.scrape_data.download_team_stats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Downloads all team statistics and saves them to the save directory defined in <a class="reference external" href="constants.html">constants</a>.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.server.scrape_data.get_saveDir">
+<code class="descclassname">remote.server.scrape_data.</code><code class="descname">get_saveDir</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/server/scrape_data.html#get_saveDir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.server.scrape_data.get_saveDir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return save directory defined in <a class="reference external" href="constants.html">constants</a>.
+:returns: String containing path to save directory.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.server.scrape_data.send_to_ftp">
+<code class="descclassname">remote.server.scrape_data.</code><code class="descname">send_to_ftp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/server/scrape_data.html#send_to_ftp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.server.scrape_data.send_to_ftp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Allows to send all files from directory <em>./data/</em> to FTP server. Due to its use on a server and security
+reasons, information about the FTP server are set as enviromental variables.</p>
+<p>Enviromental variables:</p>
+<blockquote>
+<div><ul class="simple">
+<li>FTP_SERVER &#8211; http to FTP host</li>
+<li>FTP_PORT &#8211; number of the opened FTP port</li>
+<li>FTP_NAME &#8211; login name to FTP server</li>
+<li>FTP_PASSWRD &#8211; login password to FTP server</li>
+<li>FTP_PATH &#8211; path on FTP server where files should be sent to</li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.server.scrape_data.setup_chrome_opt">
+<code class="descclassname">remote.server.scrape_data.</code><code class="descname">setup_chrome_opt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/server/scrape_data.html#setup_chrome_opt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.server.scrape_data.setup_chrome_opt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up options for Chrome webdriver. Based on defined <a class="reference external" href="constants.html">constants</a> it chooses where
+to save data and where Chrome binary and Chrome driver can be found.
+Sets following options:</p>
+<ul class="simple">
+<li><em>download.default_directory: constants.saveDir</em></li>
+<li><em>download.prompt_for_download: False</em></li>
+<li><em>download.directory_upgrade: True</em></li>
+<li><em>safebrowsing.enaled: True</em></li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Set Chrome webdriver object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="remote.server.scrape_data.setup_firefox_opt">
+<code class="descclassname">remote.server.scrape_data.</code><code class="descname">setup_firefox_opt</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/server/scrape_data.html#setup_firefox_opt"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.server.scrape_data.setup_firefox_opt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up options for Firefox webdriver. Based on defined <a class="reference external" href="constants.html">constants</a> it chooses where to save data.
+Sets following options:</p>
+<ul class="simple">
+<li><em>&#8211;headless</em></li>
+<li><em>browser.download.folderList:2</em></li>
+<li><em>browser.download.manager.showWhenStarting: False</em></li>
+<li><em>browser.download.dir: constants.saveDir</em></li>
+<li><em>browser.helperApps.neverAsk.saveToDisk: application/csv,text/csv,application/force-download</em></li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Set Firefox webdriver object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018, Zuzana Ferkova.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.0.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  <script type="text/javascript" src="_static/js/theme.js"></script>
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

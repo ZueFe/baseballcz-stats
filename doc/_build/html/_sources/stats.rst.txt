@@ -1,0 +1,5 @@
+Statistic Computation (stats.py)
+================================
+
+.. automodule:: stats
+  :members:

@@ -1,0 +1,2 @@
+web: python server.py
+clock: xvfb-run python worker.py
