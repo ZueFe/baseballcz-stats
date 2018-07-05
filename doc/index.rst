@@ -7,17 +7,16 @@ Welcome to BaseballCZ-Statistics's documentation!
 =================================================
 
 BaseballCZ-Statistics is an open-source API, written in Python that allows you to download and process
-statistics from `baseball.cz <http://baseball.cz>`_ page.
+statistics from the `baseball.cz <http://baseball.cz>`_ page.
 
-To install the API please follow instructions on `Installation <instalation.html>`_ page.
+To install the API please follow the instructions on `Installation <instalation.html>`_ page.
 
-For quick start guide please visit `Getting started <getting_started.html>`_ page, or `Examples <examples.html>`_ page
-for more examples of the API use.
+For a quick start guide please visit `Getting started <getting_started.html>`_ page.
 
 To find a specific functionality of the API visit `Documentation <documentation.html>`_ page.
 
 If you have any questions, or issues with the API, visit `Contact <contact.html>`_ page. If you enjoy using
-the API and would like to contribute to it, or have more functionality you'd like to add, please visit `Contribute <contribute.html>`_
+the API and would like to contribute, or have more functionality you'd like to add, please visit the `Contribute <contribute.html>`_
 page.
 
 Last, but not least, I'd like to thank you for trying out and using the API!

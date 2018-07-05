@@ -1,20 +1,20 @@
 Getting Started
 ===============
 
-Firstly made sure the API is correctly installed and go through `installation <installation.html>`_ process.
-If the installation process was successful, open the command line in the main directory of the API and start
+Firstly, make sure the API is correctly installed and go through the `installation <installation.html>`_ process.
+If the installation was successful, open the command line in the main directory of the API and start
 Python with command::
 
   python
 
-Now we will discuss using *remote* module, with specification on *local* module following later.
+Now we will discuss using the *remote* module, with specifications on the *local* module following later.
 At the end of the page we will also discuss how to set your own remote server to download
 the data on your own if necessary.
 
 Using Data from Remote server
 *****************************
 
-With the Python running in the command line, you can, for example download the individual batting statistics,
+With the Python running in the command line, you can, for example, download the individual batting statistics,
 by running following commands::
 
   import remote.client.download_stats as dw
@@ -34,15 +34,15 @@ by running following commands::
   # access time when the data was downloaded to the server
   data.last_modified
 
-This will download the most recent individual batter statistics and prepare them in
+This will download the most recent individual batter statistics and prepare them in a
 format that can be further processed. For more options on the kind of statistics that
 can be accessed please read the `download_stats <download_stats.html>`_ page.
 
 Computing Statistics
 ********************
 
-If you have data loaded in *data* variable as in the section above, you can start computing
-statistics::
+If you have data loaded in the *data* variable, as in the section above, you can start computing
+the statistics::
 
   import remote.client.stats
 
@@ -53,8 +53,8 @@ statistics::
   # at least 20 plate appearances
   stats.ISO(data.player_data, 20)
 
-If you have loaded data *batters* data, but try to compute *pitcher* statistics
-this may lead to an error::
+If you have *batters* data loaded, but try to compute *pitcher* statistics
+an error may occur::
 
   data.file_name
   # bat_individual
@@ -62,7 +62,7 @@ this may lead to an error::
   stats.ERA(data.player_data)
   # AttributeError: 'NoneType' object has no attribute 'dtype'
 
-So make sure you are always only computing valid data. Read `stats <stats_remote.html>`_
+So make sure you are always only computing the valid statistics. Read `stats <stats_remote.html>`_
 documentation page to see, which methods are available for which data.
 
 Computing statistics returns *Series* object that contains the computed statistics
@@ -85,14 +85,14 @@ belong to. You can therefore associate the computed statistics with the names as
   # and sort the data in ascending order
   stats.sort_computed_data(data.player_data, res, ascending = True)
 
-For more information on statistics that can be computed via API read `stats <stats_remote.html>`_
+For more information on statistics that can be computed via the API read `stats <stats_remote.html>`_
 documentation page.
 
 Downloading Data Locally
 ************************
 
 You can use *local* module to automatically download the data locally. To download
-CSV files use following commands::
+tthe CSV files use following commands::
 
   import local.download as dw
   import local.constants as cs
@@ -109,7 +109,7 @@ CSV files use following commands::
   # download single statistic, individual batters
   dw.download_stats(category = cs.CATEGORIES[0], team_stats = False)
 
-If successful the data should be saved in /data/ directory.
+If successful the data should be saved in the "/data/" directory.
 
 You can then load the downloaded data as *Data_CSV* class::
 
@@ -118,23 +118,23 @@ You can then load the downloaded data as *Data_CSV* class::
   # load individual batters stored in /data/ directory
   data = load_file.load_individual_batters()
 
-This will allow you to use loaded data the same way as in the *remote* module.
+This will allow you to use the loaded data the same way as in the *remote* module.
 
 Setting Up Remote Server
 ************************
 
 You can also set your own server that will download the CSV data automatically
-and store them to the server local drive, or FTP. The provided scripts should
-allow you to easily deploy the server to any remote server with Python on it.
+and store them to the server's local drive, or a remote FTP. The provided scripts should
+allow you to easily deploy the server to any remote server with Python and Linux distribution on it.
 
 Use *Dockerfile* to install all required dependencies.
 
-Script *server.py* is the main server script, that accept requests from the clients
+Script *server.py* is the main server script that accepts the requests from the clients
 and returns requested files, if available.
 
 Script *worker.py* is set up to automatically download the statistics locally, and send
 them to a FTP server.
 
-For safety reason, information about the FTP server to send the data to are set locally
+For safety reason, information about the FTP server, such as server URL, or login information, are set locally
 as environmental variables. For more information read the `Data scraping <data_scraping.html`>_
-documentation page. 
+documentation page.

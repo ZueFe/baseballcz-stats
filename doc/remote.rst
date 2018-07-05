@@ -11,7 +11,7 @@ Remote Server Scripts
 `worker.py <worker.html>`_
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Client scripts
+Client Scripts
 **************
 
 `data_csv.py <data_csv_remote.html>`_
@@ -21,7 +21,7 @@ Client scripts
 `stats.py <stats_remote.html>`_
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Shared scripts (Remote/Client)
+Shared Scripts (Remote/Client)
 ******************************
 
 `constants.py <constants.html>`_

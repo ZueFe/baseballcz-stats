@@ -3,7 +3,7 @@ Installation
 ============
 
 The *baseballcz-statistics* API provides two ways to work with the data. First off, you can access
-remote server and compute statistics without needing to download the CSV data locally.
+a remote server and compute the statistics without needing to download the CSV data locally.
 This will use CSV files from a remote server that are downloaded daily.
 
 The second option is to download the CSV files locally and work with the data.
@@ -11,7 +11,7 @@ The second option is to download the CSV files locally and work with the data.
 Downloads
 *********
 
-As this is a Python API, first off, make sure you have Python 3+ installed. You can download
+As this is a Python API, make sure you have Python 3+ installed. You can download
 Python from the `official <https://www.python.org/downloads/>`_ page. You can also download
 `Anaconda <https://www.anaconda.com/download>`_ distribution to have some of the required
 libraries installed right away.
@@ -32,7 +32,7 @@ and work with the data locally.
 Required Libraries
 ******************
 
-To install the requires libraries open command line in the main directory of the
+To install the required libraries, open the command line in the main directory of the
 API.
 
 If you'd like to install and use *remote* module, run the following command::
@@ -44,8 +44,8 @@ If you'd like to install and use *local* module, run the following command::
   pip install /local/requirements.txt
 
 If you are installing *local* module you will need to set up Firefox
-webdriver. Please follow instruction on `Selenium <http://selenium-python.readthedocs.io/>`_ page
-to setup them correctly. BaseballCZ-Statistics currently doesn't support downloading via
+webdriver. Please follow the instruction on `Selenium <http://selenium-python.readthedocs.io/>`_ page
+to correctly set them up. BaseballCZ-Statistics currently doesn't support downloading via
 other browsers.
 
 Test Installation
