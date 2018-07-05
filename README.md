@@ -1,8 +1,7 @@
 # baseballcz-stats
 
-[![Documentation Status](//readthedocs.org/projects/baseballcz-statistics/badge/?version=latest)](https://baseballcz-statistics.readthedocs.io/en/latest/?badge=latest)
-
-
+[![Documentation Status](https://readthedocs.org/projects/baseballcz-statistics/badge/?version=latest)](https://baseballcz-statistics.readthedocs.io/en/latest/?badge=latest)
+                
 This repo serves to offer data scraping and analysis from web page http://baseball.cz . It mainly focuses on automatically downloading the stats CSVs and working with the downloaded data. 
 
 To install and start using the API please follow the API documentation here: https://baseballcz-statistics.readthedocs.io/en/latest/
