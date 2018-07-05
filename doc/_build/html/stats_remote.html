@@ -83,8 +83,7 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-</ul>
-<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Help &amp; Contribution</span></p>
@@ -159,6 +158,25 @@
 <span id="statistic-computation-stats-py"></span><h1>Statistic Computation (stats.py)<a class="headerlink" href="#module-remote.client.stats" title="Permalink to this headline">¶</a></h1>
 <p>Main script for computation of all the statistics. Appreciation goes to <a class="reference external" href="https://baseball-stat.cz">Baseball Stats CZ</a> for
 help and explanation with different statistics and equations.</p>
+<dl class="method">
+<dt id="remote.client.stats.names_to_data">
+<code class="descclassname">stats.</code><code class="descname">names_to_data</code><span class="sig-paren">(</span><em>df</em>, <em>computed_data</em><span class="sig-paren">)</span><a class="headerlink" href="#remote.client.stats.names_to_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<p>Associate values in <em>computed_data</em> Series with the names from <em>df</em> Dataframe. Paired based on indices.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">param df:</th><td class="field-body">Pandas Dataframe containg parsed csv with data.</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">param compute_data:</th></tr>
+<tr class="field-even field"><td>&nbsp;</td><td class="field-body">Series with computed data, such as those coming out of statistic functions.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">returns:</th><td class="field-body">Pandas Dataframe with names and values of the computed data.</td>
+</tr>
+</tbody>
+</table>
 <dl class="function">
 <dt id="remote.client.stats.A">
 <code class="descclassname">remote.client.stats.</code><code class="descname">A</code><span class="sig-paren">(</span><em>df</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/remote/client/stats.html#A"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#remote.client.stats.A" title="Permalink to this definition">¶</a></dt>

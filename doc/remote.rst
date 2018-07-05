@@ -8,12 +8,16 @@ Remote Server Scripts
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 `scrape_data.py <scrape_data.html>`_
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+`worker.py <worker.html>`_
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Client scripts
 **************
 
 `data_csv.py <data_csv_remote.html>`_
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+`download_stats.py <download_stats.html>`_
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 `stats.py <stats_remote.html>`_
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

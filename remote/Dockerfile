@@ -37,5 +37,5 @@ WORKDIR /opt/app
 RUN pip install -r requirements.txt && echo 'done downloading libraries'
 
 ENTRYPOINT ["python"]
-CMD ["server.py"]
+CMD ["/server/server.py"]
 

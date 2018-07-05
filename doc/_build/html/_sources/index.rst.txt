@@ -29,7 +29,6 @@ Last, but not least, I'd like to thank you for trying out and using the API!
    introduction
    installation
    getting_started
-   examples
    documentation
 
 .. toctree::

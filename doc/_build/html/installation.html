@@ -28,7 +28,7 @@
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Documentation" href="documentation.html" />
+    <link rel="next" title="Getting Started" href="getting_started.html" />
     <link rel="prev" title="Introduction" href="introduction.html" /> 
 
   
@@ -91,8 +91,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#test-installation">Test Installation</a></li>
 </ul>
 </li>
-</ul>
-<ul>
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="documentation.html">Documentation</a></li>
 </ul>
 <p class="caption"><span class="caption-text">Help &amp; Contribution</span></p>
@@ -190,14 +189,18 @@ and work with the data locally.</p>
 <h2>Required Libraries<a class="headerlink" href="#required-libraries" title="Permalink to this headline">¶</a></h2>
 <p>To install the requires libraries open command line in the main directory of the
 API.</p>
-<p>If you&#8217;d like to install and use <em>Remote</em> module, run the following command:</p>
+<p>If you&#8217;d like to install and use <em>remote</em> module, run the following command:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">/</span><span class="n">remote</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
 </div>
-<p>If you&#8217;d like to install and use <em>Local</em> module, run the following command:</p>
+<p>If you&#8217;d like to install and use <em>local</em> module, run the following command:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
 </pre></div>
 </div>
+<p>If you are installing <em>local</em> module you will need to set up Firefox
+webdriver. Please follow instruction on <a class="reference external" href="http://selenium-python.readthedocs.io/">Selenium</a> page
+to setup them correctly. BaseballCZ-Statistics currently doesn&#8217;t support downloading via
+other browsers.</p>
 </div>
 <div class="section" id="test-installation">
 <h2>Test Installation<a class="headerlink" href="#test-installation" title="Permalink to this headline">¶</a></h2>
@@ -206,11 +209,11 @@ line in the main directory of the API. Then start Python interpreter by typing:<
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">python</span>
 </pre></div>
 </div>
-<p>and try to import a module from the API. If you installed <em>Remote</em> module type:</p>
+<p>and try to import a module from the API. If you installed <em>remote</em> module type:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">remote.client.stats</span>
 </pre></div>
 </div>
-<p>or if you installed <em>Local</em> module type:</p>
+<p>or if you installed <em>local</em> module type:</p>
 <div class="highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">local.stats</span>
 </pre></div>
 </div>
@@ -226,7 +229,7 @@ line in the main directory of the API. Then start Python interpreter by typing:<
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="documentation.html" class="btn btn-neutral float-right" title="Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="getting_started.html" class="btn btn-neutral float-right" title="Getting Started" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="introduction.html" class="btn btn-neutral" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

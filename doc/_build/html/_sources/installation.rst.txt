@@ -35,13 +35,18 @@ Required Libraries
 To install the requires libraries open command line in the main directory of the
 API.
 
-If you'd like to install and use *Remote* module, run the following command::
+If you'd like to install and use *remote* module, run the following command::
 
   pip install /remote/requirements.txt
 
-If you'd like to install and use *Local* module, run the following command::
+If you'd like to install and use *local* module, run the following command::
 
   pip install /local/requirements.txt
+
+If you are installing *local* module you will need to set up Firefox
+webdriver. Please follow instruction on `Selenium <http://selenium-python.readthedocs.io/>`_ page
+to setup them correctly. BaseballCZ-Statistics currently doesn't support downloading via
+other browsers.
 
 Test Installation
 *****************
@@ -51,11 +56,11 @@ line in the main directory of the API. Then start Python interpreter by typing::
 
   python
 
-and try to import a module from the API. If you installed *Remote* module type::
+and try to import a module from the API. If you installed *remote* module type::
 
   import remote.client.stats
 
-or if you installed *Local* module type::
+or if you installed *local* module type::
 
   import local.stats
 
