@@ -1,6 +1,6 @@
 import pandas as pd
-import constants as cs
-import data_CSV
+import local.constants as cs
+from local.data_CSV import *
 
 ## LOAD FILES from disk
 def load_stats(file_name):
@@ -9,7 +9,7 @@ def load_stats(file_name):
 
     df = pd.read_csv('{}{}'.format(cs.saveDir,file_name), encoding=cs.USED_ENCODING, delimiter=cs.SEP)
     df_default = df
-    return data_CSV.Data_CSV(df, None, file_name)
+    return Data_CSV(df, None, file_name)
 
 def load_individual_batters():
     load_stats(cs.IND_BATTER)
