@@ -1,6 +1,6 @@
 from selenium import webdriver
 import os
-import constants as cs
+import local.constants as cs
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import Select
 
