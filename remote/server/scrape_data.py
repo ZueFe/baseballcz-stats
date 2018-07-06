@@ -104,9 +104,13 @@ def download_stats(category = cs.CATEGORIES[0], team_stats = False, browser='fir
 
 def get_saveDir():
     """
-    Return save directory defined in `constants <constants.html>`_.
+    Return save directory defined in `constants <constants.html>`_. If the directory
+    doesn't exists, the method will create it.
     :returns: String containing path to save directory.
     """
+    if not os.path.isdir(cs.saveDir):
+        os.mkdir(cs.saveDir)
+
     return cs.saveDir
 
 def cleanup_dir():

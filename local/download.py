@@ -44,6 +44,9 @@ def download_stats(category = cs.CATEGORIES[0], team_stats = False):
         driver.close()
 
 def get_saveDir():
+    if not os.path.isdir(cs.saveDir):
+        os.mkdir(cs.saveDir)
+
     return cs.saveDir
 
 def cleanup_dir():
