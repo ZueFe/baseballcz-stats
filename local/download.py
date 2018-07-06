@@ -3,6 +3,7 @@ import os
 import local.constants as cs
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.support.ui import Select
+import time
 
 
 def setup_firefox_opt():
@@ -19,19 +20,28 @@ def setup_firefox_opt():
 def download_stats(category = cs.CATEGORIES[0], team_stats = False):
     driver = setup_firefox_opt()
 
-    driver.get('https://www.baseball.cz/modules.php?op=modload&name=liga&file=index&do=statx&akce=432&pda=2&admina=')
+    try:
+        driver.get('https://www.baseball.cz/modules.php?op=modload&name=liga&file=index&do=statx&akce=432&pda=2&admina=')
 
-    cat = Select(driver.find_element_by_name('xco'))
-    cat.select_by_value(category)
+        cat = Select(driver.find_element_by_name('xco'))
+        cat.select_by_value(category)
 
-    typ = Select(driver.find_element_by_name('xtyp'))
-    typ.select_by_index(cs.TYPES["týmový"] if team_stats else cs.TYPES['individuální'])
+        typ = Select(driver.find_element_by_name('xtyp'))
+        typ.select_by_index(cs.TYPES["týmový"] if team_stats else cs.TYPES['individuální'])
 
-    elem = driver.find_elements_by_xpath("//*[contains(text(), 'Exportovat')]")[0]
-    elem.click()
+        elem = driver.find_elements_by_xpath("//*[contains(text(), 'Exportovat')]")[0]
+        elem.click()
 
-    #TODO: better naming conventions for team/individual
-    os.replace('{}stats.csv'.format(get_saveDir()), '{}stats_{}_{}.csv'.format(get_saveDir(), category, 'team' if team_stats else 'individual'))
+        #Wait for the download 0.8 minutes
+        time.sleep(0.8)
+
+        #TODO: better naming conventions for team/individual
+        downloaded_file = os.path.join(get_saveDir(), "stats.csv")
+        new_filename = "stats_{}_{}.csv".format(category, 'team' if team_stats else 'individual')
+        new_filepath = os.path.join(get_saveDir(), new_filename)
+        os.replace(downloaded_file, new_filepath)
+    finally:
+        driver.close()
 
 def get_saveDir():
     return cs.saveDir
