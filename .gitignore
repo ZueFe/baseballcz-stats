@@ -112,3 +112,6 @@ rock_paper_scissors.sqlite
 
 # Betamax cassettes
 tests/cassettes/*.json
+
+# aditional
+**/data/
