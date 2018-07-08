@@ -416,7 +416,6 @@ def wRC(df, min_pa):
     return nan_to_zero(res)
 
 # taken from http://bleedcubbieblue.com
-# TODO: check, doesn't work for min_pa == 0 (returns -0.0)
 def wRC_plus(df, min_pa):
     """
     Weighted run created plus. 100.0 is league average. Available for batters.
@@ -426,6 +425,8 @@ def wRC_plus(df, min_pa):
     :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.
     """
     wrc = wRC(df, min_pa)
+    inf_to_value(wrc, 0)
+
     lg_wrc = np.mean(wrc)
 
     res = np.multiply(np.divide(wrc, lg_wrc), 100)
@@ -732,9 +733,12 @@ def FIP_minus(df, min_ip):
 
     :param df: Pandas Dataframe containing parsed csv with data.
     :param min_pa: Minimal number of plate appearances(PA). All players with smaller number of PA will be neglected from computation
-    :returns: Pandas Series with given statistics, for each player. NAN values are substituted for 0.
+    :returns: Pandas Series with given statistics, for each player. NAN  and inf values are substituted for 0.
     """
     fip = FIP(df, min_ip)
+
+    inf_to_value(fip, 0)
+
     lgfip = np.mean(fip)
 
     res = np.multiply(np.divide(lgfip,fip), 100)
@@ -940,6 +944,17 @@ def nan_to_zero(data):
     :returns: Data with NaN values swapped for 0.
     """
     return data.fillna(0)
+
+def inf_to_value(data, val):
+    """
+    Change all -inf and inf values to desired value.
+
+    :param data: Data where the NaN values should be swapped.
+    :param val: Value to change -inf to.
+    :returns: Data with -inf and inf values swapped for *val*.
+    """
+
+    res = data[np.isinf(data)] = val
 
 def change_type(data, t):
     """

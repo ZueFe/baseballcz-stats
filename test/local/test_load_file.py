@@ -4,11 +4,17 @@ import os
 sys.path.insert(0, os.path.abspath('.'))
 
 import unittest
+import numpy.testing as npt
 import local.download as dw
 import local.constants as cs
 import local.load_file as lf
 
 class TestLoadFile(unittest.TestCase):
+
+    @classmethod
+    def tearDownClass(cls):
+        dw.cleanup_dir()
+
     def read_files(self, category, team_stats = False):
         dw.cleanup_dir()
         dw.download_stats(category, team_stats)
@@ -82,11 +88,6 @@ class TestLoadFile(unittest.TestCase):
         assert 'team' in df.file_name
         assert 'catcher' in df.file_name
 
-    #TODO: figure out how to check for exception
     def test_error(self):
-        try:
+        with npt.assert_raises(Exception):
             lf.load_stats("a.csv")
-        except Exception:
-            return True
-
-        return False

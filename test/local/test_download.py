@@ -3,9 +3,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath('.'))
 
-
 import unittest
-import numpy.testing as npt
 import local.download as dw
 
 class TestDownload(unittest.TestCase):
