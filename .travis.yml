@@ -10,7 +10,7 @@ install:
   - mkdir geckodriver
   - tar -xzf ./geckodriver.tar.gz -C geckodriver
   - export PATH=$PATH:$PWD/geckodriver
-  - pip install -r remote/requirements.txt
+  - pip install -r remote/requirements.txt coverage
 
 before_script:
   - "export DISPLAY=:99.0"
@@ -20,3 +20,6 @@ before_script:
 
 script:
   pytest test/remote/
+
+after_success:
+  - coveralls
