@@ -23,7 +23,7 @@ def load_stats(params):
     df = pd.read_csv(io.StringIO(csv.content.decode(cs.USED_ENCODING)), delimiter=cs.SEP)
 
     last_modified = csv.headers['last-modified']
-    file_name = "{}_{}".format(params['category'], team if params['type'] == 2 else "individual")
+    file_name = "{}_{}".format(params['category'], 'team' if params['type'] == '2' else "individual")
 
     print("File created at server at: {}".format(last_modified))
     return Data_CSV(df, last_modified, file_name)
