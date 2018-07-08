@@ -4,7 +4,7 @@ python:
   "3.6"
 
 install:
-  pip install -r local/requirements.txt remote/requirements.txt
+  pip install -r local/requirements.txt
 
 script:
   pytest
