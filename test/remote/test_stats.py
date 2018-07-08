@@ -7,7 +7,7 @@ import unittest
 import numpy.testing as npt
 import pandas as pd
 import numpy as np
-import local.stats as s
+import remote.client.stats as s
 
 class TestStats(unittest.TestCase):
     @classmethod
@@ -19,6 +19,7 @@ class TestStats(unittest.TestCase):
         'HB' : [12, 3, 44, 0], 'Jméno' : ['Joe', 'Bob', 'Ross', 'Luke']}
         cls.df = pd.DataFrame(data)
 
+    # Check equations
     def test_single(self):
         res = s.single(self.df)
 
@@ -53,6 +54,7 @@ class TestStats(unittest.TestCase):
         npt.assert_allclose(res[1], 1.32 - .124)
         npt.assert_allclose(res[2], 3.33 - .556)
 
+    # Check min PA
     def test_ISO_min_PA(self):
         res = s.ISO(self.df, 20)
 
@@ -91,6 +93,7 @@ class TestStats(unittest.TestCase):
         npt.assert_allclose(res[1], (0.72 * 8 + 0.75 * 8 + 0.9 * singles[1] + 1.24 * 2 + 1.56 * 1 + 1.95 * 0) / 40)
         npt.assert_allclose(res[2], (0.72 * 3 + 0.75 * 17 + 0.9 * singles[2] + 1.24 * 2 + 1.56 * 0 + 1.95 * 2) / 73)
 
+    # Check min PA
     def test_wOBA_min_app(self):
         res = s.wOBA(self.df, 20)
 
@@ -112,6 +115,7 @@ class TestStats(unittest.TestCase):
         npt.assert_allclose(res[2], (((woba[2] - league_woba) / woba_scale[2]) + lg_rtopa) * 73)
         npt.assert_allclose(res[3], 0)
 
+    # Check min PA
     def test_wrc_min_pa(self):
         res = s.wRC(self.df, 20)
 
@@ -134,7 +138,7 @@ class TestStats(unittest.TestCase):
         npt.assert_allclose(res[1], wrc[1] / lgWRC * 100)
         npt.assert_allclose(res[2], wrc[2] / lgWRC * 100)
 
-
+    # Check min PA
     def test_wrc_plus_min_pa(self):
         res = s.wRC_plus(self.df, 20)
 
@@ -168,6 +172,7 @@ class TestStats(unittest.TestCase):
         npt.assert_allclose(res[2], ((13 * 2) + (3 * (3 + 44)) - (2 * 29)) / 0.3 + fip_const)
         npt.assert_allclose(res[3], ((13 * 0) + (3 * (0 + 0)) - (2 * 2)) /  127.3 + fip_const)
 
+    # Check min IP
     def test_FIP_min_ip(self):
         res = s.FIP(self.df, 15)
 
@@ -186,11 +191,13 @@ class TestStats(unittest.TestCase):
         npt.assert_allclose(res[2], lgFIP / fip[2] * 100)
         npt.assert_allclose(res[3], lgFIP / fip[3] * 100)
 
+    # Check min IP
     def test_FIP_mminus_min_ip(self):
         res = s.FIP_minus(self.df, 15)
 
         assert len(res) == 2
 
+    # Check helper functions
     def test_name_to_data(self):
         res = s.FIP(self.df, 0)
 
