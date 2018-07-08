@@ -8,7 +8,7 @@ addons:
 before install:
   - wget https://github.com/mozilla/geckodriver/releases/download/v0.17.0/geckodriver-v0.17.0-linux64.tar.gz -O geckodriver.tar.gz
   - mkdir geckodriver
-  - tar -xzf geckodriver-v0.11.1-linux64.tar.gz -C geckodriver
+  - tar -xzf ./geckodriver.tar.gz -C geckodriver
   - export PATH=$PATH:$PWD/geckodriver
 
 install:
