@@ -39,6 +39,24 @@ class TestStats(unittest.TestCase):
 
         assert len(res) == 2
 
+
+    def test_remove_nan(self):
+        df = pd.DataFrame({'vals' : [np.NaN, 3, 5, np.NaN]})
+
+        res = s.remove_nan(df['vals'])
+
+        assert len(res[np.isnan(res)]) == 0
+
+    def test_change_type(self):
+        df = pd.DataFrame({'vals' : ['0,63', '67,34%']})
+
+        res = s.change_type(df['vals'], 'float64')
+
+        assert res.dtype == 'float64'
+        npt.assert_allclose(res[0], 0.63)
+        npt.assert_allclose(res[1], 67.34)
+
+
     # Check equations
     def test_single(self):
         res = s.single(self.df)
