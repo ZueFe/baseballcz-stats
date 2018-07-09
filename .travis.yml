@@ -19,7 +19,7 @@ before_script:
   - fluxbox >/dev/null 2>&1 &
 
 script:
-  pytest --cov ./test/remote/
+  pytest --cov=./test/remote/
 
 after_success:
   - coveralls
