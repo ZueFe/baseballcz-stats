@@ -19,6 +19,26 @@ class TestStats(unittest.TestCase):
         'HB' : [12, 3, 44, 0], 'Jméno' : ['Joe', 'Bob', 'Ross', 'Luke']}
         cls.df = pd.DataFrame(data)
 
+    def test_none(self):
+        res = s.values(None, 'R')
+
+        assert res == None
+
+    def test_none_df(self):
+        res = s.AB(None)
+
+        assert res == None
+
+    def test_wrong_category(self):
+        res = s.values(self.df, 'Kek')
+
+        assert res == None
+
+    def test_min_stat_value(self):
+        res = s.min_stat_values(self.df, self.df['2B'], 'IP', 15)
+
+        assert len(res) == 2
+
     # Check equations
     def test_single(self):
         res = s.single(self.df)
