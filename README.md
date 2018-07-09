@@ -1,6 +1,6 @@
 # baseballcz-stats
 
-[![Documentation Status](https://readthedocs.org/projects/baseballcz-statistics/badge/?version=latest)](https://baseballcz-statistics.readthedocs.io/en/latest/?badge=latest) [![Build Status](https://travis-ci.org/ZueFe/baseballcz-stats.svg?branch=master)](https://travis-ci.org/ZueFe/baseballcz-stats)
+[![Documentation Status](https://readthedocs.org/projects/baseballcz-statistics/badge/?version=latest)](https://baseballcz-statistics.readthedocs.io/en/latest/?badge=latest) [![Build Status](https://travis-ci.org/ZueFe/baseballcz-stats.svg?branch=master)](https://travis-ci.org/ZueFe/baseballcz-stats) [![Coverage Status](https://coveralls.io/repos/github/ZueFe/baseballcz-stats/badge.svg?branch=master)](https://coveralls.io/github/ZueFe/baseballcz-stats?branch=master)
                 
 This repo serves to offer data scraping and analysis from web page http://baseball.cz . It mainly focuses on automatically downloading the stats CSVs and working with the downloaded data. 
 
