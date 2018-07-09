@@ -38,11 +38,13 @@ class Data_CSV:
     def __str__(self):
         return "File name: {}, created {}".format(self.file_name, self.last_modified)
 
-    def save_stats(self, path):
+    def save_stats(self, path, encoding='windows-1250', sep=';'):
         """
         Saves loaded dataframe to given path.
 
         :param path: Full path to saved dataframe, along with all directories and file name ending in *.csv*.
+        :param encoding: Type of encoding to use to save the CSV.
+        :param sep: Separator used to separate entries in CSV.
         """
         res = pd.DataFrame(self.player_data).append(self.summed_data)
-        res.to_csv(path)
+        res.to_csv(path, encoding=encoding, sep=sep, index=False)
