@@ -19,6 +19,9 @@ If you have any questions, or issues with the API, visit `Contact <contact.html>
 the API and would like to contribute, or have more functionality you'd like to add, please visit the `Contribute <contribute.html>`_
 page.
 
+You can check the source code for the API at `baseballcz-statistics github <https://github.com/ZueFe/baseballcz-stats/>`_ page, or go
+directly to `Release <https://github.com/ZueFe/baseballcz-stats/releases>`_ section to download the API directly.
+
 Last, but not least, I'd like to thank you for trying out and using the API!
 
 .. toctree::

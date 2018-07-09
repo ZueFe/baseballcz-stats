@@ -16,7 +16,7 @@ Python from the `official <https://www.python.org/downloads/>`_ page. You can al
 `Anaconda <https://www.anaconda.com/download>`_ distribution to have some of the required
 libraries installed right away.
 
-To install the API first download the source codes from the `baseballcz-statistics.github.com <https://github.com/ZueFe/baseballcz-stats>`_
+To install the API first download the source codes from the `baseballcz-statistics <https://github.com/ZueFe/baseballcz-stats/releases>`_
 github page. You can either clone the repository, or click on the green *Clone or Download* button, then
 click *Download ZIP*.
 
