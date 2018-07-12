@@ -332,9 +332,10 @@ def BABIP(df):
     ab = AB(df)
     so = K(df)
     sf = SF(df)
+    sh = SH(df)
 
     top = np.subtract(h, hr)
-    bottom = np.add(np.subtract(np.subtract(ab, hr), so), sf)
+    bottom = np.add(np.add(np.subtract(np.subtract(ab, hr), so), sf), sh)
 
     res = np.divide(top, bottom)
     res.name ='BABIP'
@@ -726,7 +727,6 @@ def compute_FIP_constant(era, hr, bb, hb, k, ip):
 
     return res
 
-#TODO: check, doesn't work for min_ip = 0
 def FIP_minus(df, min_ip):
     """
     FIP through percentage, 100.0 is league average. Available for pitchers.
@@ -803,7 +803,20 @@ def EA(df):
     """
     return change_type(values(df, 'EA'), 'float64')
 
-#TODO: add DEF
+def DEF(df):
+    """
+    Defensive efficiency, rate in which ball put in play is converted to outs. Available for batters.
+
+    :param df: Pandas Dataframe containing parsed csv with data.
+    :returns: Pandas Series with given statistics, for each player.
+    """
+    babip = BABIP(df)
+
+    res = np.subtract(1, babip)
+    res.name = 'DEF'
+
+    return res
+
 
 #################
 #Catcher

@@ -16,7 +16,7 @@ class TestStats(unittest.TestCase):
         'BB' : [5, 8, 3, 0], 'PAB' : [13, 40, 73, 0], 'SA': [.5, 1.32, 3.33, .0], 'BA' : [.332, .124, .556, .0],
         'OBP' : [.012, .350, .227, .0], 'SF' : [0, 7, 3, 0], 'AB' : [17, 93, 125, 2], 'SO' : [12, 33, 29, 2],
         'HP' : [3, 8, 17, 0], 'R' : [12, 55, 23, 0], 'IP' : [20, 13.3, 0.3, 127.3], 'ERA' : [3.32, 1.55, 6.73, 0.53],
-        'HB' : [12, 3, 44, 0], 'Jméno' : ['Joe', 'Bob', 'Ross', 'Luke']}
+        'HB' : [12, 3, 44, 0], 'Jméno' : ['Joe', 'Bob', 'Ross', 'Luke'], 'SH' : [0, 0, 1, 0]}
         cls.df = pd.DataFrame(data)
 
     def test_none(self):
@@ -115,9 +115,9 @@ class TestStats(unittest.TestCase):
         res = s.BABIP(self.df)
 
         assert res.dtype != 'object'
-        npt.assert_allclose(res[0], (6-4) / (17 - 4 - 12 + 0))
+        npt.assert_allclose(res[0], (6-4) / (17 - 4 - 12 + 0 ))
         npt.assert_allclose(res[1], (9) / (93 - 33 + 7))
-        npt.assert_allclose(res[2], (12 - 2) / (125 - 2 - 29 + 3))
+        npt.assert_allclose(res[2], (12 - 2) / (125 - 2 - 29 + 3 + 1))
 
     def test_wOBA(self):
         res = s.wOBA(self.df, 0)
@@ -227,6 +227,14 @@ class TestStats(unittest.TestCase):
         res = s.FIP_minus(self.df, 15)
 
         assert len(res) == 2
+
+    def test_DEF(self):
+        res = s.DEF(self.df)
+        babip = s.BABIP(self.df)
+
+        npt.assert_allclose(res[0], 1 - babip[0])
+        npt.assert_allclose(res[1], 1 - babip[1])
+        npt.assert_allclose(res[2], 1 - babip[2])
 
     def test_name_to_data(self):
         res = s.FIP(self.df, 0)
