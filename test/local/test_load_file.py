@@ -17,7 +17,9 @@ class TestLoadFile(unittest.TestCase):
 
     def read_files(self, category, team_stats = False):
         dw.cleanup_dir()
-        dw.download_stats(category, team_stats)
+        driver = dw.setup_firefox_opt()
+        dw.download_stats(driver, category, team_stats)
+        driver.close()
 
     def test_individual_batters(self):
         self.read_files(cs.CATEGORIES[0])

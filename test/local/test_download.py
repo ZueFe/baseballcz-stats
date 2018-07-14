@@ -9,7 +9,8 @@ import local.download as dw
 class TestDownload(unittest.TestCase):
     def test_single(self):
         dw.cleanup_dir()
-        dw.download_stats()
+        driver = dw.setup_firefox_opt()
+        dw.download_stats(driver)
 
         save_path = dw.get_saveDir()
         files = os.listdir(save_path)
@@ -17,6 +18,17 @@ class TestDownload(unittest.TestCase):
         assert len(files) == 1
         assert 'individual' in files[0]
         assert 'palka' in files[0]
+
+    def test_single_error(self):
+        dw.cleanup_dir()
+        res = dw.download_stats(None)
+
+        assert res == None
+        save_path = dw.get_saveDir()
+        files = os.listdir(save_path)
+
+        assert len(files) == 0      
+
 
     def test_individual(self):
         dw.cleanup_dir()

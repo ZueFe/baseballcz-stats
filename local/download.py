@@ -17,31 +17,31 @@ def setup_firefox_opt():
 
     return driver
 
-def download_stats(category = cs.CATEGORIES[0], team_stats = False):
-    driver = setup_firefox_opt()
+def download_stats(driver, category = cs.CATEGORIES[0], team_stats = False):
+    if driver == None:
+        print("No driver loaded, couldn't perform download.")
+        return None
 
-    try:
-        driver.get('https://www.baseball.cz/modules.php?op=modload&name=liga&file=index&do=statx&akce=432&pda=2&admina=')
 
-        cat = Select(driver.find_element_by_name('xco'))
-        cat.select_by_value(category)
+    driver.get('https://www.baseball.cz/modules.php?op=modload&name=liga&file=index&do=statx&akce=432&pda=2&admina=')
 
-        typ = Select(driver.find_element_by_name('xtyp'))
-        typ.select_by_index(cs.TYPES["týmový"] if team_stats else cs.TYPES['individuální'])
+    cat = Select(driver.find_element_by_name('xco'))
+    cat.select_by_value(category)
 
-        elem = driver.find_elements_by_xpath("//*[contains(text(), 'Exportovat')]")[0]
-        elem.click()
+    typ = Select(driver.find_element_by_name('xtyp'))
+    typ.select_by_index(cs.TYPES["týmový"] if team_stats else cs.TYPES['individuální'])
 
-        #Wait for the download 0.8 minutes
-        time.sleep(0.8)
+    elem = driver.find_elements_by_xpath("//*[contains(text(), 'Exportovat')]")[0]
+    elem.click()
 
-        #TODO: better naming conventions for team/individual
-        downloaded_file = os.path.join(get_saveDir(), "stats.csv")
-        new_filename = "stats_{}_{}.csv".format(category, 'team' if team_stats else 'individual')
-        new_filepath = os.path.join(get_saveDir(), new_filename)
-        os.replace(downloaded_file, new_filepath)
-    finally:
-        driver.close()
+    #Wait for the download 0.8 minutes
+    time.sleep(0.8)
+
+    #TODO: better naming conventions for team/individual
+    downloaded_file = os.path.join(get_saveDir(), "stats.csv")
+    new_filename = "stats_{}_{}.csv".format(category, 'team' if team_stats else 'individual')
+    new_filepath = os.path.join(get_saveDir(), new_filename)
+    os.replace(downloaded_file, new_filepath)
 
 def get_saveDir():
     if not os.path.isdir(cs.saveDir):
@@ -55,22 +55,38 @@ def cleanup_dir():
     for f in files:
         os.remove('{}{}'.format(get_saveDir(),f))
 
-def download_team_stats():
-    #TODO improve
+def download_team_stats(driver = None):
+    #TODO improve loging
     print("Started downloading team stats.")
-    for cat in cs.CATEGORIES:
-        download_stats(cat, team_stats = True)
 
-    print("Done.")
+    if driver == None:
+        driver = setup_firefox_opt()
 
-def download_single_stats():
+    try:
+        for cat in cs.CATEGORIES:
+            download_stats(driver, cat, team_stats = True)
+    except Exception:
+        print("Error occured while downloading, downloading aborted.")
+    finally:
+        driver.close()
+        print("Done.")
+
+def download_single_stats(driver = None):
     #TODO improve
     print("Started downloading single stats.")
-    for cat in cs.CATEGORIES:
-        download_stats(cat)
 
-    print("Done.")
+    if driver == None:
+        driver = setup_firefox_opt()
 
-def download_all():
+    try:
+        for cat in cs.CATEGORIES:
+            download_stats(driver, cat)
+    except Exception:
+        print("Error occured while downloading, downloading aborted.")
+    finally:
+        driver.close()
+        print("Done.")
+
+def download_all():    
     download_team_stats()
     download_single_stats()

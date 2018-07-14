@@ -5,6 +5,7 @@ and store them in `Data_CSV <data_csv_remote.html>`_ class.
 
 import remote.client.constants as cs
 import pandas as pd
+import pandas.errors as pe
 import io
 import requests
 from remote.client.data_CSV import *
@@ -33,62 +34,96 @@ def load_individual_batters():
     """
     Loads individual batter statistics (category = bat, type = 0)
 
-    :returns: Data_CSV class with the data and information about the data
+    :returns: Data_CSV class with the data and information about the data, or None if data on server were corrupted
     """
-    return load_stats({'category': 'bat', 'type': '0'})
+    try:
+        res = load_stats({'category': 'bat', 'type': '0'})
+    except pe.EmptyDataError:
+        print("Corrupted data on server, download aborted.")
+        res = None
+    return res
 
 def load_individual_field():
     """
     Loads individual field statistics (category = field, type = 0)
 
-    :returns: Data_CSV class with the data and information about the data
+    :returns: Data_CSV class with the data and information about the data, or None if data on server were corrupted
     """
-    return load_stats({'category': 'field', 'type': '0'})
-
+    try:
+        res = load_stats({'category': 'field', 'type': '0'})
+    except pe.EmptyDataError:
+        print("Corrupted data on server, download aborted.")
+        res = None
+    return res
 def load_individual_pitchers():
     """
     Loads individual pitching statistics (category = pitcher, type = 0)
 
-    :returns: Data_CSV class with the data and information about the data
+    :returns: Data_CSV class with the data and information about the data, or None if data on server were corrupted
     """
-    return load_stats({'category': 'pitcher', 'type': '0'})
-
+    try:
+        res = load_stats({'category': 'pitcher', 'type': '0'})
+    except pe.EmptyDataError:
+        print("Corrupted data on server, download aborted.")
+        res = None
+    return res
 def load_individual_catchers():
     """
     Loads individual catcher statistics (category = catecher, type = 0)
 
-    :returns: Data_CSV class with the data and information about the data
+    :returns: Data_CSV class with the data and information about the data, or None if data on server were corrupted
     """
-    return load_stats({'category': 'catcher', 'type': '0'})
-
+    try:
+        res = load_stats({'category': 'catcher', 'type': '0'})
+    except pe.EmptyDataError:
+        print("Corrupted data on server, download aborted.")
+        res = None
+    return res
 def load_team_batters():
     """
     Loads team batter statistics (category = bat, type = 2)
 
-    :returns: Data_CSV class with the data and information about the data
+    :returns: Data_CSV class with the data and information about the data, or None if data on server were corrupted
     """
-    return load_stats({'category': 'bat', 'type': '2'})
-
+    try:
+        res = load_stats({'category': 'bat', 'type': '2'})
+    except pe.EmptyDataError:
+        print("Corrupted data on server, download aborted.")
+        res = None
+    return res
 def load_team_fields():
     """
     Loads team fielding statistics (category = field, type = 2)
 
-    :returns: Data_CSV class with the data and information about the data
+    :returns: Data_CSV class with the data and information about the data, or None if data on server were corrupted
     """
-    return load_stats({'category': 'field', 'type': '2'})
-
+    try:
+        res = load_stats({'category': 'field', 'type': '2'})
+    except pe.EmptyDataError:
+        print("Corrupted data on server, download aborted.")
+        res = None
+    return res
 def load_team_pitchers():
     """
     Loads team pitching statistics (category = pitcher, type = 2)
 
-    :returns: Data_CSV class with the data and information about the data
+    :returns: Data_CSV class with the data and information about the data, or None if data on server were corrupted
     """
-    return load_stats({'category': 'pitcher', 'type': '2'})
-
+    try:
+        res = load_stats({'category': 'pitcher', 'type': '2'})
+    except pe.EmptyDataError:
+        print("Corrupted data on server, download aborted.")
+        res = None
+    return res
 def load_team_catchers():
     """
     Loads team catcher statistics (category = catecher, type = 2)
 
-    :returns: Data_CSV class with the data and information about the data
+    :returns: Data_CSV class with the data and information about the data, or None if data on server were corrupted
     """
-    return load_stats({'category': 'catcher', 'type': '2'})
+    try:
+        res = load_stats({'category': 'catcher', 'type': '2'})
+    except pe.EmptyDataError:
+        print("Corrupted data on server, download aborted.")
+        res = None
+    return res

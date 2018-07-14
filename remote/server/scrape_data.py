@@ -91,8 +91,8 @@ def download_stats(category = cs.CATEGORIES[0], team_stats = False, browser='fir
         elem = driver.find_elements_by_xpath("//*[contains(text(), 'Exportovat')]")[0]
         elem.click()
 
-        #Wait for the download 0.8 minutes
-        time.sleep(0.8)
+        #Wait for the download 1 minute
+        time.sleep(1)
 
         #TODO: better naming conventions for team/individual
         downloaded_file = os.path.join(get_saveDir(), "stats.csv")
