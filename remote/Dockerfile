@@ -24,18 +24,18 @@ ENV SCREEN_WIDTH 1360
 ENV SCREEN_HEIGHT 1020
 ENV SCREEN_DEPTH 24
 ENV DISPLAY :99.0
-ENV GIT_BRANCH remote
+ENV GIT_BRANCH master
 
 # Copy application source
 RUN git clone https://github.com/ZueFe/baseballcz-stats.git /opt/app && \
     cd /opt/app && \
     git checkout $GIT_BRANCH && \
-    echo '-=!!--cloning branch doe!n!!'
+    echo '-=!!--cloning branch dea!n!!'
 WORKDIR /opt/app
 
 # Install pipenv and download dependencies
-RUN pip install -r requirements.txt && echo 'done downloading libraries'
+RUN pip install -r remote/requirements.txt && echo 'done downloading liibraries'
 
 ENTRYPOINT ["python"]
-CMD ["/server/server.py"]
+CMD ["remote/server/worker.py"]
 
