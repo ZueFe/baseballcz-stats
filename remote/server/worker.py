@@ -6,7 +6,7 @@ import scrape_data as sd
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('cron', day_of_week='mon-sun', hour=23, minute=55 timezone='Europe/Bratislava')
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour=23, minute=40, timezone='Europe/Bratislava')
 def work_data():
     """
     Schedules job, downloads all data from the page and stores them locally,
