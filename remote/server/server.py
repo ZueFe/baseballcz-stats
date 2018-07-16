@@ -6,7 +6,7 @@ withou client needing to know the address of the FTP server.
 
 from flask import Flask, make_response, request
 import requests
-import constants as cs
+import remote.server.constants as cs
 import os
 
 app = Flask(__name__)

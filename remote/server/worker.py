@@ -2,11 +2,11 @@
 Worker script set on remote server to download data from the page regularly.
 """
 from apscheduler.schedulers.blocking import BlockingScheduler
-import scrape_data as sd
+import remote.server.scrape_data as sd
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('cron', day_of_week='mon-sun', hour=23, minute=40, timezone='Europe/Bratislava')
+@sched.scheduled_job('cron', day_of_week='mon-sun', hour=23, minute=35, timezone='Europe/Bratislava')
 def work_data():
     """
     Schedules job, downloads all data from the page and stores them locally,
