@@ -169,9 +169,10 @@ def send_to_ftp():
     ftp.login(os.environ['FTP_NAME'], os.environ['FTP_PASSWRD'])
     ftp.cwd(os.environ['FTP_PATH'])
 
-    files = os.listdir('data')
+    file_path = os.path.join('remote', os.path.join('server', 'data'))
+    files = os.listdir(file_path)
     for f in files:
-        opened = open(os.path.join('data',f), 'rb')
+        opened = open(os.path.join(file_path,f), 'rb')
         print(opened)
         ftp.storbinary('STOR {}'.format(f), opened)
         opened.close()
