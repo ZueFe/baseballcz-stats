@@ -30,7 +30,7 @@ ENV GIT_BRANCH master
 RUN git clone https://github.com/ZueFe/baseballcz-stats.git /opt/app && \
     cd /opt/app && \
     git checkout $GIT_BRANCH && \
-    echo '-=!!--clo!n!i!ng bra!nch de!a!!n!!'
+    echo '-=!!--c!lo!n!i!ng bra!nch de!a!!n!!'
 WORKDIR /opt/app
 
 # Install pipenv and download dependencies
