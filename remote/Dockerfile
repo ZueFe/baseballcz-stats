@@ -30,12 +30,12 @@ ENV GIT_BRANCH master
 RUN git clone https://github.com/ZueFe/baseballcz-stats.git /opt/app && \
     cd /opt/app && \
     git checkout $GIT_BRANCH && \
-    echo '-=!!--clo!n!ing branch de!a!!n!!'
+    echo '-=!!--clo!n!i!ng bra!nch de!a!!n!!'
 WORKDIR /opt/app
 
 # Install pipenv and download dependencies
-RUN pip install -r remote/requirements.txt && echo 'done downloading liibraries'
+RUN pip install --upgrade pip && pip install -r remote/requirements.txt && echo 'done downloading liibraries'
 
 ENTRYPOINT ["python"]
-CMD ["remote/server/worker.py"]
+CMD ["remote/server/server.py"]
 
