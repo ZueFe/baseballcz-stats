@@ -25,12 +25,13 @@ ENV SCREEN_HEIGHT 1020
 ENV SCREEN_DEPTH 24
 ENV DISPLAY :99.0
 ENV GIT_BRANCH master
+ENV PIP_DEFAULT_TIMEOUT 10000
 
 # Copy application source
 RUN git clone https://github.com/ZueFe/baseballcz-stats.git /opt/app && \
     cd /opt/app && \
     git checkout $GIT_BRANCH && \
-    echo '-=!!--c!lo!n!i!ng bra!nch de!a!!n!!'
+    echo '-=!!--c!!o!n!i!ng bra!nch de!a!!n!!'
 WORKDIR /opt/app
 
 # Install pipenv and download dependencies
