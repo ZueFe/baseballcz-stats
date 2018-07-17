@@ -2,7 +2,7 @@
 Worker script set on remote server to download data from the page regularly.
 """
 from apscheduler.schedulers.blocking import BlockingScheduler
-import remote.server.scrape_data as sd
+import scrape_data as sd
 
 sched = BlockingScheduler()
 

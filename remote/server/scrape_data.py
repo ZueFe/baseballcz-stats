@@ -5,7 +5,7 @@ in combination with Firefox, or Chrome webdriver to save data locally. These can
 
 from selenium import webdriver
 import os
-import remote.server.constants as cs
+import constants as cs
 from selenium.webdriver.firefox.options import Options
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver.support.ui import Select
