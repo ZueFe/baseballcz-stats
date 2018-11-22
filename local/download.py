@@ -23,7 +23,7 @@ def download_stats(driver, category = cs.CATEGORIES[0], team_stats = False):
         return None
 
 
-    driver.get('https://www.baseball.cz/modules.php?op=modload&name=liga&file=index&do=statx&akce=432&pda=2&admina=')
+    driver.get('https://is.baseball.cz/modules.php?op=modload&name=liga&file=index&do=statx&akce=432&pda=2&admina=')
 
     cat = Select(driver.find_element_by_name('xco'))
     cat.select_by_value(category)
@@ -87,6 +87,6 @@ def download_single_stats(driver = None):
         driver.close()
         print("Done.")
 
-def download_all():    
+def download_all():
     download_team_stats()
     download_single_stats()
