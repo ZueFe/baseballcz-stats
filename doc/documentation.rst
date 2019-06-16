@@ -2,8 +2,4 @@
 Documentation
 =============
 
-`Remote Module <remote.html>`_
-******************************
-
-`Local Module <local.html>`_
-****************************
+In-depth documentation can be found at `Apiary <https://baseballstatscz.docs.apiary.io/>`page.
