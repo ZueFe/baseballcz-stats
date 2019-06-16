@@ -31,7 +31,7 @@ ENV PIP_DEFAULT_TIMEOUT 10000
 RUN git clone https://github.com/ZueFe/baseballcz-stats.git /opt/app && \
     cd /opt/app && \
     git checkout $GIT_BRANCH && \
-    echo '-=!!--c!o!!!n!i!ng bra!nch de!!!'
+    echo '-=!!--clo!!!n!i!ng bra!nch de!!!'
 WORKDIR /opt/app
 
 # Install pipenv and download dependencies
