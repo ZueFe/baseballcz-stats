@@ -12,7 +12,7 @@ RUN echo 'deb http://security.debian.org/ stretch/updates main' > /etc/apt/sourc
 
 # Install geckodriver
 #WORKDIR /tmp
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.17.0/geckodriver-v0.17.0-linux64.tar.gz -O geckodriver.tar.gz && \
+RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.24.0/geckodriver-v0.24.0-linux64.tar.gz -O geckodriver.tar.gz && \
     tar -xvf ./geckodriver.tar.gz && \
     mv geckodriver /opt/geckodriver && \
     rm geckodriver.tar.gz && \
@@ -31,12 +31,11 @@ ENV PIP_DEFAULT_TIMEOUT 10000
 RUN git clone https://github.com/ZueFe/baseballcz-stats.git /opt/app && \
     cd /opt/app && \
     git checkout $GIT_BRANCH && \
-    echo '-=!!--c!!o!n!i!ng bra!nch de!!!'
+    echo '-=!!--c!!o!!!n!i!ng bra!nch de!!!'
 WORKDIR /opt/app
 
 # Install pipenv and download dependencies
 RUN pip install -r remote/requirements.txt && echo 'done downloading liibraries'
 
 ENTRYPOINT ["python"]
-CMD ["remote/server/worker.py"]
-
+CMD ["remote/server/server.py"]
