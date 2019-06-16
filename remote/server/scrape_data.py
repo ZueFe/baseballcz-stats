@@ -173,7 +173,6 @@ def send_to_ftp():
     files = os.listdir(file_path)
     for f in files:
         opened = open(os.path.join(file_path,f), 'rb')
-        print(opened)
         ftp.storbinary('STOR {}'.format(f), opened)
         opened.close()
 
