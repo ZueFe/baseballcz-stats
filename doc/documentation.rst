@@ -2,4 +2,4 @@
 Documentation
 =============
 
-In-depth documentation can be found at `Apiary<https://baseballstatscz.docs.apiary.io/>`_ page.
+In-depth documentation can be found at `Apiary<https://baseballstatscz.docs.apiary.io>`_ page.
